@@ -13,9 +13,33 @@
 		0C4A68EC2C75C80B00E36B1B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0C4A68EB2C75C80B00E36B1B /* Base */; };
 		0C4A68EE2C75C80C00E36B1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C4A68ED2C75C80C00E36B1B /* Assets.xcassets */; };
 		0C4A68F12C75C80C00E36B1B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 0C4A68F02C75C80C00E36B1B /* Base */; };
+		0C4A68F92C75C9DF00E36B1B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A68F82C75C9DF00E36B1B /* SplashViewController.swift */; };
+		0C4A68FB2C75C9EF00E36B1B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A68FA2C75C9EF00E36B1B /* WebViewController.swift */; };
+		0C4A68FD2C75CA0700E36B1B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A68FC2C75CA0700E36B1B /* LoginViewController.swift */; };
+		0C4A68FF2C75CA1400E36B1B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A68FE2C75CA1400E36B1B /* RegisterViewController.swift */; };
+		0C4A69092C75CB5600E36B1B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69012C75CB5600E36B1B /* DatabaseManager.swift */; };
+		0C4A690D2C75CB5600E36B1B /* SpinnerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69052C75CB5600E36B1B /* SpinnerManager.swift */; };
+		0C4A690E2C75CB5600E36B1B /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69062C75CB5600E36B1B /* StorageManager.swift */; };
+		0C4A69102C75CC0900E36B1B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A690F2C75CC0900E36B1B /* Extensions.swift */; };
+		0C4A69142C75CCA700E36B1B /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69132C75CCA700E36B1B /* Models.swift */; };
+		0C4A69162C75CDDF00E36B1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */; };
+		0C4A69182C75D2D100E36B1B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */; };
+		0C4A691B2C75D6E200E36B1B /* VolunteerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A691A2C75D6E200E36B1B /* VolunteerVC.swift */; };
+		0C4A69212C75DBC600E36B1B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69202C75DBC600E36B1B /* Buttons.swift */; };
+		0C4A69232C75DCE300E36B1B /* cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69222C75DCE300E36B1B /* cells.swift */; };
+		0C4A69252C75E2E800E36B1B /* RequestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69242C75E2E800E36B1B /* RequestDetailViewController.swift */; };
+		0C4A69272C75ECCD00E36B1B /* BoardsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69262C75ECCD00E36B1B /* BoardsVC.swift */; };
+		0C4A69292C75ED4300E36B1B /* SpecificBoardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69282C75ED4300E36B1B /* SpecificBoardVC.swift */; };
+		0C4A692C2C75F80A00E36B1B /* UserRequestsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A692B2C75F80A00E36B1B /* UserRequestsVC.swift */; };
+		0C4A692E2C77295D00E36B1B /* categoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A692D2C77295D00E36B1B /* categoriesVC.swift */; };
+		0C4A69302C772B3300E36B1B /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A692F2C772B3300E36B1B /* CategoryManager.swift */; };
+		0C4A69332C7754C700E36B1B /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69322C7754C700E36B1B /* FilterViewController.swift */; };
+		0C4A69352C775A3600E36B1B /* DemandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69342C775A3600E36B1B /* DemandVC.swift */; };
+		34547E90026034B2A979B83F /* Pods_OtefIsrael.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		041D3326E780D33B84619538 /* Pods-OtefIsrael.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OtefIsrael.release.xcconfig"; path = "Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael.release.xcconfig"; sourceTree = "<group>"; };
 		0C4A68E12C75C80B00E36B1B /* OtefIsrael.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OtefIsrael.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C4A68E42C75C80B00E36B1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C4A68E62C75C80B00E36B1B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +48,30 @@
 		0C4A68ED2C75C80C00E36B1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C4A68F02C75C80C00E36B1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0C4A68F22C75C80C00E36B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0C4A68F82C75C9DF00E36B1B /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		0C4A68FA2C75C9EF00E36B1B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		0C4A68FC2C75CA0700E36B1B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0C4A68FE2C75CA1400E36B1B /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		0C4A69012C75CB5600E36B1B /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		0C4A69052C75CB5600E36B1B /* SpinnerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerManager.swift; sourceTree = "<group>"; };
+		0C4A69062C75CB5600E36B1B /* StorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		0C4A690F2C75CC0900E36B1B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0C4A69132C75CCA700E36B1B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		0C4A691A2C75D6E200E36B1B /* VolunteerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolunteerVC.swift; sourceTree = "<group>"; };
+		0C4A69202C75DBC600E36B1B /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		0C4A69222C75DCE300E36B1B /* cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cells.swift; sourceTree = "<group>"; };
+		0C4A69242C75E2E800E36B1B /* RequestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDetailViewController.swift; sourceTree = "<group>"; };
+		0C4A69262C75ECCD00E36B1B /* BoardsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsVC.swift; sourceTree = "<group>"; };
+		0C4A69282C75ED4300E36B1B /* SpecificBoardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificBoardVC.swift; sourceTree = "<group>"; };
+		0C4A692B2C75F80A00E36B1B /* UserRequestsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequestsVC.swift; sourceTree = "<group>"; };
+		0C4A692D2C77295D00E36B1B /* categoriesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = categoriesVC.swift; sourceTree = "<group>"; };
+		0C4A692F2C772B3300E36B1B /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
+		0C4A69322C7754C700E36B1B /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		0C4A69342C775A3600E36B1B /* DemandVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandVC.swift; sourceTree = "<group>"; };
+		5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OtefIsrael.debug.xcconfig"; path = "Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael.debug.xcconfig"; sourceTree = "<group>"; };
+		AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OtefIsrael.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34547E90026034B2A979B83F /* Pods_OtefIsrael.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +91,8 @@
 			children = (
 				0C4A68E32C75C80B00E36B1B /* OtefIsrael */,
 				0C4A68E22C75C80B00E36B1B /* Products */,
+				D653390F779ADF1B0D45E45C /* Pods */,
+				0CFDA5165DF20CFACF4A56CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +107,102 @@
 		0C4A68E32C75C80B00E36B1B /* OtefIsrael */ = {
 			isa = PBXGroup;
 			children = (
-				0C4A68E42C75C80B00E36B1B /* AppDelegate.swift */,
-				0C4A68E62C75C80B00E36B1B /* SceneDelegate.swift */,
-				0C4A68E82C75C80B00E36B1B /* ViewController.swift */,
+				0C4A69312C77335800E36B1B /* Miscellaneous */,
+				0C4A69192C75D6BB00E36B1B /* Delegates */,
+				0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */,
+				0C4A69072C75CB5600E36B1B /* Managers */,
+				0C4A69112C75CC1C00E36B1B /* ViewControllers */,
 				0C4A68EA2C75C80B00E36B1B /* Main.storyboard */,
 				0C4A68ED2C75C80C00E36B1B /* Assets.xcassets */,
 				0C4A68EF2C75C80C00E36B1B /* LaunchScreen.storyboard */,
 				0C4A68F22C75C80C00E36B1B /* Info.plist */,
+				0C4A68F82C75C9DF00E36B1B /* SplashViewController.swift */,
+				0C4A69342C775A3600E36B1B /* DemandVC.swift */,
 			);
 			path = OtefIsrael;
+			sourceTree = "<group>";
+		};
+		0C4A69072C75CB5600E36B1B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A69012C75CB5600E36B1B /* DatabaseManager.swift */,
+				0C4A69052C75CB5600E36B1B /* SpinnerManager.swift */,
+				0C4A69062C75CB5600E36B1B /* StorageManager.swift */,
+				0C4A692F2C772B3300E36B1B /* CategoryManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		0C4A69112C75CC1C00E36B1B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A69122C75CC2900E36B1B /* LoginVCs */,
+				0C4A692A2C75F41C00E36B1B /* fiveMainVCs */,
+				0C4A68FA2C75C9EF00E36B1B /* WebViewController.swift */,
+				0C4A691A2C75D6E200E36B1B /* VolunteerVC.swift */,
+				0C4A69242C75E2E800E36B1B /* RequestDetailViewController.swift */,
+				0C4A69282C75ED4300E36B1B /* SpecificBoardVC.swift */,
+				0C4A692D2C77295D00E36B1B /* categoriesVC.swift */,
+				0C4A69322C7754C700E36B1B /* FilterViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		0C4A69122C75CC2900E36B1B /* LoginVCs */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A68FC2C75CA0700E36B1B /* LoginViewController.swift */,
+				0C4A68FE2C75CA1400E36B1B /* RegisterViewController.swift */,
+			);
+			path = LoginVCs;
+			sourceTree = "<group>";
+		};
+		0C4A69192C75D6BB00E36B1B /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A68E62C75C80B00E36B1B /* SceneDelegate.swift */,
+				0C4A68E42C75C80B00E36B1B /* AppDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		0C4A692A2C75F41C00E36B1B /* fiveMainVCs */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A69262C75ECCD00E36B1B /* BoardsVC.swift */,
+				0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */,
+				0C4A68E82C75C80B00E36B1B /* ViewController.swift */,
+				0C4A692B2C75F80A00E36B1B /* UserRequestsVC.swift */,
+			);
+			path = fiveMainVCs;
+			sourceTree = "<group>";
+		};
+		0C4A69312C77335800E36B1B /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				0C4A69222C75DCE300E36B1B /* cells.swift */,
+				0C4A69202C75DBC600E36B1B /* Buttons.swift */,
+				0C4A69132C75CCA700E36B1B /* Models.swift */,
+				0C4A690F2C75CC0900E36B1B /* Extensions.swift */,
+			);
+			path = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		0CFDA5165DF20CFACF4A56CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D653390F779ADF1B0D45E45C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */,
+				041D3326E780D33B84619538 /* Pods-OtefIsrael.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +212,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C4A68F52C75C80C00E36B1B /* Build configuration list for PBXNativeTarget "OtefIsrael" */;
 			buildPhases = (
+				04B5E92A33D3CBCA1FEE8F17 /* [CP] Check Pods Manifest.lock */,
 				0C4A68DD2C75C80B00E36B1B /* Sources */,
 				0C4A68DE2C75C80B00E36B1B /* Frameworks */,
 				0C4A68DF2C75C80B00E36B1B /* Resources */,
+				92F52F68F50005F28063BE3D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C4A68EE2C75C80C00E36B1B /* Assets.xcassets in Resources */,
+				0C4A69162C75CDDF00E36B1B /* GoogleService-Info.plist in Resources */,
 				0C4A68F12C75C80C00E36B1B /* Base in Resources */,
 				0C4A68EC2C75C80B00E36B1B /* Base in Resources */,
 			);
@@ -133,14 +274,77 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		04B5E92A33D3CBCA1FEE8F17 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OtefIsrael-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92F52F68F50005F28063BE3D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0C4A68DD2C75C80B00E36B1B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C4A68FD2C75CA0700E36B1B /* LoginViewController.swift in Sources */,
+				0C4A69292C75ED4300E36B1B /* SpecificBoardVC.swift in Sources */,
 				0C4A68E92C75C80B00E36B1B /* ViewController.swift in Sources */,
+				0C4A69352C775A3600E36B1B /* DemandVC.swift in Sources */,
+				0C4A68FF2C75CA1400E36B1B /* RegisterViewController.swift in Sources */,
+				0C4A69252C75E2E800E36B1B /* RequestDetailViewController.swift in Sources */,
+				0C4A691B2C75D6E200E36B1B /* VolunteerVC.swift in Sources */,
+				0C4A692C2C75F80A00E36B1B /* UserRequestsVC.swift in Sources */,
+				0C4A69332C7754C700E36B1B /* FilterViewController.swift in Sources */,
+				0C4A69142C75CCA700E36B1B /* Models.swift in Sources */,
+				0C4A690E2C75CB5600E36B1B /* StorageManager.swift in Sources */,
+				0C4A69212C75DBC600E36B1B /* Buttons.swift in Sources */,
 				0C4A68E52C75C80B00E36B1B /* AppDelegate.swift in Sources */,
 				0C4A68E72C75C80B00E36B1B /* SceneDelegate.swift in Sources */,
+				0C4A68FB2C75C9EF00E36B1B /* WebViewController.swift in Sources */,
+				0C4A69302C772B3300E36B1B /* CategoryManager.swift in Sources */,
+				0C4A68F92C75C9DF00E36B1B /* SplashViewController.swift in Sources */,
+				0C4A69232C75DCE300E36B1B /* cells.swift in Sources */,
+				0C4A69092C75CB5600E36B1B /* DatabaseManager.swift in Sources */,
+				0C4A69182C75D2D100E36B1B /* ProfileViewController.swift in Sources */,
+				0C4A69102C75CC0900E36B1B /* Extensions.swift in Sources */,
+				0C4A692E2C77295D00E36B1B /* categoriesVC.swift in Sources */,
+				0C4A69272C75ECCD00E36B1B /* BoardsVC.swift in Sources */,
+				0C4A690D2C75CB5600E36B1B /* SpinnerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +407,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -266,7 +470,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -287,6 +491,7 @@
 		};
 		0C4A68F62C75C80C00E36B1B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -315,6 +520,7 @@
 		};
 		0C4A68F72C75C80C00E36B1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 041D3326E780D33B84619538 /* Pods-OtefIsrael.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
