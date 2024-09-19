@@ -35,7 +35,7 @@ extension DatabaseManager{
             }
         }
     }
-
+    
     private func checkUserAttributeExists(attribute: String, value: String, completion: @escaping (Bool) -> Void) {
         database.child("users").queryOrdered(byChild: attribute).queryEqual(toValue: value).observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
@@ -46,16 +46,27 @@ extension DatabaseManager{
         }
     }
     
-    public func insertUser(with user: User, completion: @escaping (Bool) -> Void){
-                
-        let userValues: [String: Any] = [
+    public func insertUser(with user: User, completion: @escaping (Bool) -> Void) {
+        // Prepare the user data dictionary to include all fields
+        var userValues: [String: Any] = [
             "email": user.email,
             "phone": user.phoneNumber,
             "first_name": user.firstName,
             "last_name": user.lastName,
-            "trips": ["dummy"],
+            "requests": user.requests
         ]
+        
+        // Only add originalCity and currentCity if they are not nil
+        if let originalCity = user.originalCity {
+            userValues["original_city"] = originalCity
+        }
+        if let currentCity = user.currentCity {
+            userValues["current_city"] = currentCity
+        }
+        
         print("in insertUser")
+        
+        // Set the user data in the database
         database.child("users").child(user.id).setValue(userValues) { error, _ in
             if let error = error {
                 print("Failed to write to database in insertUser: \(error)")
@@ -67,25 +78,44 @@ extension DatabaseManager{
     }
     
     public func getUserData(with user_uid: String, completion: @escaping (User?) -> Void) {
-        
-        database.child("users").child(user_uid).observeSingleEvent(of: .value) { (snapshot, error) in
+        // Observe a single event to retrieve user data
+        database.child("users").child(user_uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let userData = snapshot.value as? [String: Any],
                   let userEmail = userData["email"] as? String,
                   let userPhone = userData["phone"] as? String,
                   let firstName = userData["first_name"] as? String,
                   let lastName = userData["last_name"] as? String,
-                  let requestsData = userData["requests"] as? [String]
-            else {
-                print("failed to get user data:")
+                  let requestsDict = userData["requests"] as? [String: Any] else {
+                print("Failed to get user data:")
                 print(snapshot.value as Any)
                 completion(nil)
                 return
             }
-            let user = User(id: user_uid, firstName: firstName, lastName: lastName, email: userEmail, requests: requestsData, phoneNumber: userPhone)
-
+            
+            // Retrieve optional fields if they exist
+            let originalCity = userData["original_city"] as? String
+            let currentCity = userData["current_city"] as? String
+            
+            // Convert the keys of the requests dictionary to an array of strings
+            let requestsData = Array(requestsDict.keys)
+            
+            // Create a User object with all the fields
+            let user = User(
+                id: user_uid,
+                firstName: firstName,
+                lastName: lastName,
+                originalCity: originalCity,
+                currentCity: currentCity,
+                email: userEmail,
+                requests: requestsData,
+                phoneNumber: userPhone
+            )
+            
             completion(user)
+        
         }
     }
+    
 }
 
 
@@ -135,6 +165,38 @@ extension DatabaseManager {
                 completion(didSucceed)
             }
             
+        } catch {
+            print("Failed to encode user request: \(error)")
+            completion(false)
+        }
+    }
+    
+    
+    /// Update a user request
+    func updateUserRequest(userId: String, userRequest: UserRequest, completion: @escaping (Bool) -> Void) {
+        do {
+            let requestData = try JSONEncoder().encode(userRequest)
+            let requestDict = try JSONSerialization.jsonObject(with: requestData, options: .allowFragments) as? [String: Any]
+            
+            let requestId = userRequest.id
+            
+            // Update in global /requests/ node
+            database.child("requests").child(requestId).setValue(requestDict) { error, _ in
+                if let error = error {
+                    print("Failed to update user request in global requests: \(error)")
+                    completion(false)
+                } else {
+                    // Also update the requestId under the specific user's branch
+                    self.database.child("users").child(userId).child("requests").child(requestId).setValue(true) { error, _ in
+                        if let error = error {
+                            print("Failed to update requestId under user's requests: \(error)")
+                            completion(false)
+                        } else {
+                            completion(true)
+                        }
+                    }
+                }
+            }
         } catch {
             print("Failed to encode user request: \(error)")
             completion(false)

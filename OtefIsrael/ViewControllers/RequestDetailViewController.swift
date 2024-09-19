@@ -105,7 +105,7 @@ class RequestDetailViewController: UIViewController {
         button.setTitle(" טלפון", for: .normal)
         button.setImage(phoneIcon, for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .systemGray
+        button.backgroundColor = .systemGreen
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
@@ -145,6 +145,7 @@ class RequestDetailViewController: UIViewController {
 
 
     private func setupViews() {
+        
         view.addSubview(scrollView)
         
         scrollView.addSubview(imageScrollView)
@@ -160,6 +161,9 @@ class RequestDetailViewController: UIViewController {
         buttonStackView.addArrangedSubview(emailButton)
         buttonStackView.addArrangedSubview(phoneButton)
         view.addSubview(buttonStackView)
+        
+        emailButton.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
+        phoneButton.addTarget(self, action: #selector(phoneButtonTapped), for: .touchUpInside)
     }
 
 
@@ -168,8 +172,9 @@ class RequestDetailViewController: UIViewController {
         
         scrollView.frame = view.bounds
 
-        // Adjust the frame for the imageScrollView and pageControl
+        // Ensure imageScrollView has a proper frame set
         imageScrollView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.width, height: scrollView.frame.width / 2)
+
         pageControl.frame = CGRect(x: 0, y: imageScrollView.frame.maxY - 20, width: scrollView.frame.width, height: 20)
 
         titleLabel.frame = CGRect(x: 16, y: imageScrollView.frame.maxY + 16, width: scrollView.frame.width - 32, height: titleLabel.intrinsicContentSize.height)
@@ -185,10 +190,14 @@ class RequestDetailViewController: UIViewController {
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: phoneLabel.frame.maxY + 70)
         
         // Re-configure the image carousel after setting the frames
-        if let imageUrls = request?.imageUrls {
+        if let imageUrls = request?.imageUrls, !imageUrls.isEmpty {
             setupImageCarousel(imageUrls: imageUrls)
         }
+        else{
+            setupImageCarousel(imageUrls: ["launchLogo"])
+        }
     }
+
 
     
     private func setupNavigationBar() {
@@ -201,6 +210,39 @@ class RequestDetailViewController: UIViewController {
         let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonTapped))
         navigationItem.rightBarButtonItem = shareButton
     }
+    
+    @objc private func emailButtonTapped() {
+        guard let request = request, let email = request.email else { return }
+        if let emailUrl = createEmailUrl(to: email, subject: "פנייה בנוגע ל: \(request.title)", body: "") {
+            UIApplication.shared.open(emailUrl)
+        }
+    }
+
+    private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
+        let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let bodyEncoded = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlString = "mailto:\(to)?subject=\(subjectEncoded)&body=\(bodyEncoded)"
+        return URL(string: urlString)
+    }
+    
+    @objc private func phoneButtonTapped() {
+        guard let request = request, let phoneNumber = request.phone, phoneNumber != ""
+        else {
+            let alertController = UIAlertController(title: "שים לב", message: "המודעה אינה מכילה מספר טלפון", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "אוקיי", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        if let phoneUrl = URL(string: "tel://\(phoneNumber)") {
+            UIApplication.shared.open(phoneUrl)
+        } else {
+            // Handle the case when the device cannot make a call (e.g., iPad)
+            let alertController = UIAlertController(title: "שים לב", message: "המכשיר שלך אינו תומך בשיחות טלפון", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "אוקיי", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+
 
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
@@ -245,30 +287,45 @@ class RequestDetailViewController: UIViewController {
         if let imageUrls = request.imageUrls, !imageUrls.isEmpty {
             setupImageCarousel(imageUrls: imageUrls)
         } else {
-            setupImageCarousel(imageUrls: ["placeholderImage"])
+            setupImageCarousel(imageUrls: ["launchLogo"])
         }
     }
-
+    
     private func setupImageCarousel(imageUrls: [String]) {
-        imageScrollView.contentSize = CGSize(width: imageScrollView.frame.width * CGFloat(imageUrls.count), height: imageScrollView.frame.height)
+        // Clear existing image views to avoid duplicates
+        imageScrollView.subviews.forEach { $0.removeFromSuperview() }
         imageScrollView.delegate = self
         
+        // Set content size and reset page control
+        imageScrollView.contentSize = CGSize(width: imageScrollView.frame.width * CGFloat(imageUrls.count), height: imageScrollView.frame.height)
         pageControl.numberOfPages = imageUrls.count
         pageControl.currentPage = 0
-        
         for (index, urlString) in imageUrls.enumerated() {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-            if let url = URL(string: urlString) {
+            
+            // Set temporary background color for debugging
+            imageView.backgroundColor = .red
+            
+            if urlString == "launchLogo" {
+                if let image = UIImage(named: "launchLogo") {
+                    imageView.image = image
+                }
+            } else if let url = URL(string: urlString) {
                 imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "launchLogo"))
             }
+            
+            // Set frame for image view
             imageView.frame = CGRect(x: CGFloat(index) * imageScrollView.frame.width, y: 0, width: imageScrollView.frame.width, height: imageScrollView.frame.height)
             imageScrollView.addSubview(imageView)
         }
-        
+
+        // Force layout update
+        imageScrollView.layoutIfNeeded()
         startImageTimer()
     }
+
     
     private func startImageTimer() {
         imageTimer?.invalidate()

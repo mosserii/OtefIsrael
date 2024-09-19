@@ -371,6 +371,9 @@ class CategoriesCell: UICollectionViewCell {
         else if let namedImage = UIImage(named: answer.category){
             imageView.image = namedImage
         }
+        else if let namedImage = UIImage(systemName: answer.category){
+            imageView.image = namedImage
+        }
         else if let imageName = CategoryManager.shared.getImageUrl(forAnswer: answer.category){
             imageView.sd_setImage(with: imageName, placeholderImage: UIImage(systemName: "airplane"))
         }

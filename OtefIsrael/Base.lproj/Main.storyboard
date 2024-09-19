@@ -25,7 +25,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15" y="2370"/>
+            <point key="canvasLocation" x="-1650" y="2393"/>
         </scene>
         <!--Splash View Controller-->
         <scene sceneID="SYL-mO-t8J">
@@ -125,11 +125,11 @@
                         <tabBarAppearance key="scrollEdgeAppearance"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Jn2-jC-VMo" kind="relationship" relationship="viewControllers" id="sjD-0q-90i"/>
-                        <segue destination="8Vs-Iu-45z" kind="relationship" relationship="viewControllers" id="pOl-1N-V3g"/>
-                        <segue destination="vxH-6K-l1K" kind="relationship" relationship="viewControllers" id="Mgj-pg-O1e"/>
-                        <segue destination="kG8-gd-CNK" kind="relationship" relationship="viewControllers" id="HP2-Of-nFj"/>
-                        <segue destination="ZD0-zn-u05" kind="relationship" relationship="viewControllers" id="nm4-Lw-ogA"/>
+                        <segue destination="vxH-6K-l1K" kind="relationship" relationship="viewControllers" id="cBY-rV-dwd"/>
+                        <segue destination="kG8-gd-CNK" kind="relationship" relationship="viewControllers" id="aID-FY-zop"/>
+                        <segue destination="Jn2-jC-VMo" kind="relationship" relationship="viewControllers" id="5rY-6p-vNn"/>
+                        <segue destination="8Vs-Iu-45z" kind="relationship" relationship="viewControllers" id="RM9-hy-zwa"/>
+                        <segue destination="ZD0-zn-u05" kind="relationship" relationship="viewControllers" id="ie9-mc-tXW"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y72-Ve-saz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -353,7 +353,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lBn-oo-4FY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="956" y="2370"/>
+            <point key="canvasLocation" x="-877" y="2393"/>
         </scene>
         <!--Requests Boards-->
         <scene sceneID="1O1-CC-Lfe">
@@ -375,12 +375,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpd-x9-TKn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="958" y="1680"/>
+            <point key="canvasLocation" x="-876" y="1680"/>
         </scene>
-        <!--Explore View Controller-->
+        <!--InfoVC-->
         <scene sceneID="mpP-KT-eZZ">
             <objects>
-                <viewController storyboardIdentifier="ExploreViewController" id="vVF-3r-uXz" customClass="ExploreViewController" customModule="OtefIsrael" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="infoVC" id="vVF-3r-uXz" customClass="infoVC" customModule="OtefIsrael" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="W6a-2a-Emk">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -391,13 +391,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vzz-qe-w02" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1831" y="2370"/>
+            <point key="canvasLocation" x="44" y="2393"/>
         </scene>
-        <!--Home-->
+        <!--מידע-->
         <scene sceneID="k5L-t0-FoY">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Jn2-jC-VMo" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" selectedImage="house.fill" id="511-Cf-QQZ"/>
+                    <tabBarItem key="tabBarItem" title="מידע" image="info.circle" catalog="system" selectedImage="info.circle" id="511-Cf-QQZ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ORd-XY-QIg">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -410,7 +410,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qom-Q5-6wE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1831" y="1680"/>
+            <point key="canvasLocation" x="44" y="1680"/>
         </scene>
         <!--User RequestsVC-->
         <scene sceneID="brT-z7-h0h">
@@ -426,7 +426,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C1Q-Mf-m2u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-860" y="2370"/>
+            <point key="canvasLocation" x="894" y="2393"/>
         </scene>
         <!--הבקשות שלי-->
         <scene sceneID="c3k-BM-K8t">
@@ -448,7 +448,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eO6-l5-J6B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-860" y="1680"/>
+            <point key="canvasLocation" x="894" y="1680"/>
         </scene>
         <!--בקשה חדשה-->
         <scene sceneID="3G7-VX-KZL">
@@ -467,11 +467,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RPZ-hF-wAh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="16" y="1667"/>
+            <point key="canvasLocation" x="-1650" y="1680"/>
         </scene>
     </scenes>
     <resources>
-        <image name="house.fill" catalog="system" width="128" height="104"/>
+        <image name="info.circle" catalog="system" width="128" height="123"/>
         <image name="list.bullet.rectangle.fill" catalog="system" width="128" height="93"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>

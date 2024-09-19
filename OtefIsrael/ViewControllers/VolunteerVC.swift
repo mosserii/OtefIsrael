@@ -13,7 +13,8 @@ import FirebaseAuth
 class VolunteerVC: UIViewController, UITextFieldDelegate {
 
     var isDemand: Bool = false
-    var requestToEdit: UserRequest? // TODO: pass the request we want to edit 
+    var isEditingRequest: Bool = false
+    var requestToEdit: UserRequest? // TODO: pass the request we want to edit
     
     var requests = [UserRequest]()
             
@@ -34,6 +35,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "הוספת בקשה"
         label.textAlignment = .right
+        label.textColor = .black
         label.font = .systemFont(ofSize: 24, weight: .bold)
         return label
     }()
@@ -43,6 +45,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         label.text = "מלא את כל פרטי בקשתך על מנת שנוכל למצוא התאמה למי שצריך ולטפל בה בצורה הטובה ביותר."
         label.numberOfLines = 0
         label.textAlignment = .right
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16)
         return label
     }()
@@ -50,6 +53,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
     private let headlineLabel: UILabel = {
         let label = UILabel()
         label.text = "כותרת הבקשה"
+        label.textColor = .black
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .right
         return label
@@ -67,7 +71,8 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
         field.textAlignment = .right
-        field.backgroundColor = .systemBackground
+        field.textColor = .black
+        field.backgroundColor = .white
         return field
     }()
     
@@ -75,6 +80,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "קטגוריה"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         label.textAlignment = .right
         return label
     }()
@@ -87,10 +93,58 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         field.placeholder = "בחר קטגוריה..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .systemBackground
+        field.backgroundColor = .white
+        field.textColor = .black
         field.textAlignment = .right
         field.returnKeyType = .done
         return field
+    }()
+    
+    private let segmentedControlLabel: UILabel = {
+        let label = UILabel()
+        label.text = "היכן לפרסם?"
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private let segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["להעלות ללוח הקהילה", "להעביר רק למנהלים"])
+        control.selectedSegmentIndex = 0
+        control.backgroundColor = .white
+        control.layer.cornerRadius = 8
+        control.layer.borderWidth = 1
+        control.selectedSegmentTintColor = .systemGreen
+        control.layer.borderColor = UIColor.lightGray.cgColor
+        return control
+    }()
+    
+    private let descLabel: UILabel = {
+        let label = UILabel()
+        label.text = "תיאור הבקשה"
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private let descField: UITextView = {
+        let textView = UITextView()
+        textView.autocapitalizationType = .sentences
+        textView.autocorrectionType = .no
+        textView.layer.cornerRadius = 8 // Match the corner radius
+        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.borderWidth = 1 // Match the border width
+        textView.textColor = .black // Match the text color
+        textView.backgroundColor = .white // Match the background color
+        textView.textAlignment = .right // Match the text alignment
+        textView.font = UIFont.systemFont(ofSize: 16) // Match the font size
+        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12) // Adjust to match UITextField padding
+        textView.isScrollEnabled = false
+        textView.text = "פרט לפרטים על מנת שנוכל להבין טוב יותר..."
+        textView.textColor = UIColor.lightGray // Placeholder color
+        return textView
     }()
     
     private let agePickerLabel: UILabel = {
@@ -98,6 +152,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         label.text = "גיל"
         label.textAlignment = .right
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         return label
     }()
 
@@ -109,8 +164,9 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         field.placeholder = "גיל"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .systemBackground
+        field.backgroundColor = .white
         field.keyboardType = .numberPad
+        field.textColor = .black
         field.returnKeyType = .next
         field.textAlignment = .right
         field.semanticContentAttribute = .forceLeftToRight
@@ -121,6 +177,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "יישוב מקורי"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         label.textAlignment = .right
         return label
     }()
@@ -137,7 +194,8 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
         field.textAlignment = .right
-        field.backgroundColor = .systemBackground
+        field.textColor = .black
+        field.backgroundColor = .white
         return field
     }()
     
@@ -145,6 +203,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "יישוב נוכחי"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         label.textAlignment = .right
         return label
     }()
@@ -161,7 +220,8 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
         field.textAlignment = .right
-        field.backgroundColor = .systemBackground
+        field.textColor = .black
+        field.backgroundColor = .white
         return field
     }()
     
@@ -169,6 +229,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "תאריך הבקשה"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         label.textAlignment = .right
         return label
     }()
@@ -176,43 +237,17 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
     private let datePicker: UIDatePicker = {
         let field = UIDatePicker()
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.backgroundColor = UIColor.systemBackground
+        field.backgroundColor = UIColor.white
         field.minimumDate = Date() // Set the minimum date to today
         field.datePickerMode = .date // Show only the date picker
         return field
-    }()
-
-    
-    private let descLabel: UILabel = {
-        let label = UILabel()
-        label.text = "תיאור הבקשה"
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .right
-        return label
-    }()
-    
-    private let descField: UITextView = {
-        let textView = UITextView()
-        textView.autocapitalizationType = .sentences
-        textView.autocorrectionType = .no
-        textView.layer.cornerRadius = 8 // Match the corner radius
-        textView.layer.borderColor = UIColor.lightGray.cgColor
-        textView.layer.borderWidth = 1 // Match the border width
-        textView.textColor = .black // Match the text color
-        textView.backgroundColor = .systemBackground // Match the background color
-        textView.textAlignment = .right // Match the text alignment
-        textView.font = UIFont.systemFont(ofSize: 16) // Match the font size
-        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12) // Adjust to match UITextField padding
-        textView.isScrollEnabled = false
-        textView.text = "תאר את הבקשה..."
-        textView.textColor = UIColor.lightGray // Placeholder color
-        return textView
     }()
     
     private let photoLabel: UILabel = {
         let label = UILabel()
         label.text = "הוסף תמונות"
         label.font = .systemFont(ofSize: 16)
+        label.textColor = .black
         label.textAlignment = .right
         return label
     }()
@@ -263,6 +298,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         setupUI()
         setupPickers()
     
+        fillCities()
         // Set the delegates for text fields
         agePickerField.delegate = self
         headlineField.delegate = self
@@ -270,6 +306,14 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         currentCityField.delegate = self
         categoryField.delegate = self
         descField.delegate = self
+        
+        if !self.isDemand{
+            self.titleLabel.text = "תיאור הצעת ההתנדבות"
+            self.instructionLabel.text = "מעריכים שהגעת עד לפה ויש עוד אנשים טובים בדרך, נשמח לדייק את ההתנדבות על מנת שנוכל להתאים אותה בצורה הטובה ביותר."
+            self.headlineLabel.text = "כותרת הצעת ההתנדבות"
+            self.descLabel.text = "פרטים נוספים על ההתנדבות"
+            self.dateLabel.text = "תאריך ההתנדבות"
+        }
         
         let continueButton = UIBarButtonItem(title: "הבא", style: .plain, target: self, action: #selector(saveButtonTapped))
         navigationItem.leftBarButtonItem = continueButton
@@ -293,6 +337,62 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
             descField.text = "תאר את הבקשה..."
             descField.textColor = UIColor.lightGray
         }
+
+        // Load and display images if imageUrls are present
+        if let imageUrls = request.imageUrls, !imageUrls.isEmpty {
+            for imageUrl in imageUrls {
+                if let url = URL(string: imageUrl) {
+                    loadImageFromUrl(url: url) { [weak self] image in
+                        guard let image = image else {return}
+                        self?.addImageToStackView(image: image)
+                    }
+                }
+            }
+        }
+    }
+    
+    func addImageToStackView(image: UIImage) {
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.borderWidth = 1
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        photoStackView.addArrangedSubview(imageView)
+        
+        // Update scrollView contentSize
+        scrollView.contentSize = CGSize(width: view.frame.width, height: photoStackView.frame.maxY + 70)
+    }
+
+
+    private func loadImageFromUrl(url: URL, completion: @escaping (UIImage?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                print("Failed to load image from URL: \(url), error: \(String(describing: error))")
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+        }.resume()
+    }
+
+    
+    func fillCities() {
+        guard let originalCity = UserDefaults.standard.value(forKey: "originalCity") as? String,
+                  let currentCity = UserDefaults.standard.value(forKey: "currentCity") as? String
+        else {
+            return
+        }
+        oldCityField.text = originalCity
+        currentCityField.text = currentCity
     }
 
     
@@ -313,6 +413,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         scrollView.addSubview(headlineField)
         scrollView.addSubview(categoryLabel)
         scrollView.addSubview(categoryField)
+        
+        
+        scrollView.addSubview(segmentedControlLabel)
+        scrollView.addSubview(segmentedControl)
+
+        scrollView.addSubview(descLabel)
+        scrollView.addSubview(descField)
         scrollView.addSubview(oldCityLabel)
         scrollView.addSubview(oldCityField)
         scrollView.addSubview(currentCityLabel)
@@ -321,8 +428,6 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         scrollView.addSubview(agePickerField)
         scrollView.addSubview(dateLabel)
         scrollView.addSubview(datePicker)
-        scrollView.addSubview(descLabel)
-        scrollView.addSubview(descField)
         scrollView.addSubview(photoLabel)
         scrollView.addSubview(photoButton)
         scrollView.addSubview(photoStackView)
@@ -345,28 +450,31 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         categoryLabel.frame = CGRect(x: padding, y: headlineField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
         categoryField.frame = CGRect(x: padding, y: categoryLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
         
-        oldCityLabel.frame = CGRect(x: padding, y: categoryField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
+        segmentedControlLabel.frame = CGRect(x: padding, y: categoryField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
+        segmentedControl.frame = CGRect(x: padding, y: segmentedControlLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
+        
+        descLabel.frame = CGRect(x: padding, y: segmentedControl.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
+        descField.frame = CGRect(x: padding, y: descLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight * 2)
+        
+        oldCityLabel.frame = CGRect(x: padding, y: descField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
         oldCityField.frame = CGRect(x: padding, y: oldCityLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
         
         currentCityLabel.frame = CGRect(x: padding, y: oldCityField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
         currentCityField.frame = CGRect(x: padding, y: currentCityLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
         
         agePickerLabel.frame = CGRect(x: padding, y: currentCityField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
-        agePickerField.frame = CGRect(x: view.frame.size.width - 2 * elementHeight - padding, y: agePickerLabel.frame.maxY + 5, width: elementHeight*2, height: elementHeight)
+        agePickerField.frame = CGRect(x: view.frame.size.width - 2 * elementHeight - padding, y: agePickerLabel.frame.maxY + 5, width: elementHeight * 2, height: elementHeight)
         
         dateLabel.frame = CGRect(x: padding, y: agePickerField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
         datePicker.frame = CGRect(x: padding, y: dateLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
 
-        descLabel.frame = CGRect(x: padding, y: datePicker.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
-        descField.frame = CGRect(x: padding, y: descLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight*2)
-        
-        photoLabel.frame = CGRect(x: padding, y: descField.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
+        photoLabel.frame = CGRect(x: padding, y: datePicker.frame.maxY + padding, width: view.frame.size.width - 2 * padding, height: labelHeight)
         photoButton.frame = CGRect(x: padding, y: photoLabel.frame.maxY + 5, width: view.frame.size.width - 2 * padding, height: elementHeight)
         photoStackView.frame = CGRect(x: padding, y: photoButton.frame.maxY + 10, width: view.frame.size.width - 2 * padding, height: 100)
         
         scrollView.contentSize = CGSize(width: view.frame.width, height: photoStackView.frame.maxY + 60)
-        
     }
+
 
     
     func setupPickers() {
@@ -411,10 +519,47 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         }
         return "\(month) \(day)\(daySuffix) \(year)"
     }
+    
+    // Function to check if all fields are filled
+    private func areAllFieldsValid() -> Bool {
+        if headlineField.text?.isEmpty ?? true {
+            return false
+        }
+        if categoryField.text?.isEmpty ?? true {
+            return false
+        }
+        if oldCityField.text?.isEmpty ?? true {
+            return false
+        }
+        if currentCityField.text?.isEmpty ?? true {
+            return false
+        }
+        if descField.text.isEmpty || descField.text == "פרט לפרטים על מנת שנוכל להבין טוב יותר..." || descField.text == "תאר את הבקשה..." {
+            return false
+        }
+        return true
+    }
+    
+    private func showValidationErrorAlert() {
+        let alert = UIAlertController(title: "שגיאה", message: "אנא מלא את כל השדות הנדרשים", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "אישור", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     @objc func saveButtonTapped() {
         guard let user_id = Auth.auth().currentUser?.uid else {
+            let vc = LoginViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
             print("User is not logged in")
+            return
+        }
+        
+        // Validate all required fields
+        if !areAllFieldsValid() {
+            // If validation fails, show an alert and return
+            showValidationErrorAlert()
             return
         }
 
@@ -426,11 +571,22 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
         // Collect images from photoStackView
         let images = photoStackView.arrangedSubviews.compactMap { ($0 as? UIImageView)?.image }
 
+        // Check if editing an existing request
+        if let existingRequest = requestToEdit {
+            updateRequest(existingRequest: existingRequest, userId: user_id, images: images, userEmail: userEmail, userPhone: userPhone)
+        } else {
+            createNewRequest(userId: user_id, images: images, userEmail: userEmail, userPhone: userPhone)
+        }
+    }
+
+    // Function to handle new request creation
+    private func createNewRequest(userId: String, images: [UIImage], userEmail: String, userPhone: String) {
         if images.isEmpty {
             // No images, directly create and insert the request
             let newRequest = UserRequest(
                 id: UUID().uuidString,
                 isDemand: self.isDemand,
+                isPublic: self.segmentedControl.selectedSegmentIndex == 0,
                 title: self.headlineField.text ?? "",
                 categories: [self.categoryField.text ?? ""],
                 oldCity: self.oldCityField.text,
@@ -438,13 +594,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                 age: self.agePickerField.text ?? "",
                 date: self.datePicker.date,
                 description: self.descField.text,
-                user_id: user_id,
+                user_id: userId,
                 email: userEmail,
                 phone: userPhone,
                 imageUrls: []
             )
             
-            DatabaseManager.shared.insertUserRequest(userId: user_id, userRequest: newRequest) { success in
+            DatabaseManager.shared.insertUserRequest(userId: userId, userRequest: newRequest) { success in
                 if success {
                     print("User request inserted successfully")
                     self.dismiss(animated: true, completion: nil)
@@ -463,6 +619,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                     let newRequest = UserRequest(
                         id: UUID().uuidString,
                         isDemand: self?.isDemand ?? false,
+                        isPublic: self?.segmentedControl.selectedSegmentIndex == 0,
                         title: self?.headlineField.text ?? "",
                         categories: [self?.categoryField.text ?? ""],
                         oldCity: self?.oldCityField.text,
@@ -470,13 +627,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                         age: self?.agePickerField.text ?? "",
                         date: self?.datePicker.date,
                         description: self?.descField.text,
-                        user_id: user_id,
+                        user_id: userId,
                         email: userEmail,
                         phone: userPhone,
                         imageUrls: imageUrls
                     )
                     
-                    DatabaseManager.shared.insertUserRequest(userId: user_id, userRequest: newRequest) { success in
+                    DatabaseManager.shared.insertUserRequest(userId: userId, userRequest: newRequest) { success in
                         if success {
                             print("User request inserted successfully")
                             self?.dismiss(animated: true, completion: nil)
@@ -497,6 +654,83 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
             }
         }
     }
+
+    // Function to handle request update
+    private func updateRequest(existingRequest: UserRequest, userId: String, images: [UIImage], userEmail: String, userPhone: String) {
+        if images.isEmpty {
+            // Update the request without images
+            let updatedRequest = UserRequest(
+                id: existingRequest.id,
+                isDemand: self.isDemand,
+                isPublic: self.segmentedControl.selectedSegmentIndex == 0,
+                title: self.headlineField.text ?? "",
+                categories: [self.categoryField.text ?? ""],
+                oldCity: self.oldCityField.text,
+                currentCity: self.currentCityField.text,
+                age: self.agePickerField.text ?? "",
+                date: self.datePicker.date,
+                description: self.descField.text,
+                user_id: userId,
+                email: userEmail,
+                phone: userPhone,
+                imageUrls: existingRequest.imageUrls // Keep existing image URLs
+            )
+            
+            DatabaseManager.shared.updateUserRequest(userId: userId, userRequest: updatedRequest) { success in
+                if success {
+                    print("User request updated successfully")
+                    self.dismiss(animated: true, completion: nil)
+                } else {
+                    print("Failed to update user request")
+                    let alert = UIAlertController(title: "Error", message: "Failed to update your request. Please try again.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        } else {
+            // Update the request and upload new images
+            StorageManager.shared.uploadRequestImages(requestId: existingRequest.id, images: images) { [weak self] result in
+                switch result {
+                case .success(let imageUrls):
+                    let updatedRequest = UserRequest(
+                        id: existingRequest.id,
+                        isDemand: self?.isDemand ?? false,
+                        isPublic: self?.segmentedControl.selectedSegmentIndex == 0,
+                        title: self?.headlineField.text ?? "",
+                        categories: [self?.categoryField.text ?? ""],
+                        oldCity: self?.oldCityField.text,
+                        currentCity: self?.currentCityField.text,
+                        age: self?.agePickerField.text ?? "",
+                        date: self?.datePicker.date,
+                        description: self?.descField.text,
+                        user_id: userId,
+                        email: userEmail,
+                        phone: userPhone,
+                        imageUrls: imageUrls
+                    )
+                    
+                    DatabaseManager.shared.updateUserRequest(userId: userId, userRequest: updatedRequest) { success in
+                        if success {
+                            print("User request updated successfully")
+                            self?.dismiss(animated: true, completion: nil)
+                        } else {
+                            print("Failed to update user request")
+                            let alert = UIAlertController(title: "Error", message: "Failed to update your request. Please try again.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self?.present(alert, animated: true, completion: nil)
+                        }
+                    }
+
+                case .failure(let error):
+                    print("Failed to upload images: \(error)")
+                    let alert = UIAlertController(title: "Error", message: "Failed to upload images. Please try again.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
 
 
     private func showUploadError() {
@@ -530,6 +764,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
     
     private func presentCategoriesVC() {
         let categoriesVC = categoriesVC()
+        //TODO: when you add new categories : CategoryManager.shared.insertCategories()
         categoriesVC.categories = CategoryManager.shared.getCategories()
         categoriesVC.allowMultiple = false // or true if you want to allow multiple selection
 
@@ -602,7 +837,7 @@ extension VolunteerVC : UITextViewDelegate {
     
     // UITextViewDelegate
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "Event Title..." || textView.text == "תאר את הבקשה..."  {
+        if textView.text == "פרטים נוספים על ההתנדבות" || textView.text == "תאר את הבקשה..."  {
             textView.text = nil
         }
         if textView.textColor == UIColor.lightGray {
@@ -663,21 +898,5 @@ extension VolunteerVC: UIImagePickerControllerDelegate, UINavigationControllerDe
             addImageToStackView(image: selectedImage)
         }
         dismiss(animated: true, completion: nil)
-    }
-
-    func addImageToStackView(image: UIImage) {
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
-        imageView.layer.borderWidth = 1
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        photoStackView.addArrangedSubview(imageView)
-        
-        scrollView.contentSize = CGSize(width: view.frame.width, height: photoStackView.frame.maxY + 70)
     }
 }

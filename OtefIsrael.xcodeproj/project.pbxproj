@@ -35,6 +35,9 @@
 		0C4A69302C772B3300E36B1B /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A692F2C772B3300E36B1B /* CategoryManager.swift */; };
 		0C4A69332C7754C700E36B1B /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69322C7754C700E36B1B /* FilterViewController.swift */; };
 		0C4A69352C775A3600E36B1B /* DemandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69342C775A3600E36B1B /* DemandVC.swift */; };
+		0C4A69372C776D6800E36B1B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69362C776D6800E36B1B /* MainViewController.swift */; };
+		0C733FEE2C9247840060B141 /* RequestOrBoardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */; };
+		0C733FF02C924AC60060B141 /* infoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C733FEF2C924AC60060B141 /* infoVC.swift */; };
 		34547E90026034B2A979B83F /* Pods_OtefIsrael.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +73,9 @@
 		0C4A692F2C772B3300E36B1B /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		0C4A69322C7754C700E36B1B /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		0C4A69342C775A3600E36B1B /* DemandVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandVC.swift; sourceTree = "<group>"; };
+		0C4A69362C776D6800E36B1B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOrBoardVC.swift; sourceTree = "<group>"; };
+		0C733FEF2C924AC60060B141 /* infoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = infoVC.swift; sourceTree = "<group>"; };
 		5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OtefIsrael.debug.xcconfig"; path = "Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael.debug.xcconfig"; sourceTree = "<group>"; };
 		AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OtefIsrael.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -144,6 +150,7 @@
 				0C4A69282C75ED4300E36B1B /* SpecificBoardVC.swift */,
 				0C4A692D2C77295D00E36B1B /* categoriesVC.swift */,
 				0C4A69322C7754C700E36B1B /* FilterViewController.swift */,
+				0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -169,10 +176,12 @@
 		0C4A692A2C75F41C00E36B1B /* fiveMainVCs */ = {
 			isa = PBXGroup;
 			children = (
-				0C4A69262C75ECCD00E36B1B /* BoardsVC.swift */,
-				0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */,
 				0C4A68E82C75C80B00E36B1B /* ViewController.swift */,
+				0C4A69262C75ECCD00E36B1B /* BoardsVC.swift */,
+				0C733FEF2C924AC60060B141 /* infoVC.swift */,
+				0C4A69362C776D6800E36B1B /* MainViewController.swift */,
 				0C4A692B2C75F80A00E36B1B /* UserRequestsVC.swift */,
+				0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */,
 			);
 			path = fiveMainVCs;
 			sourceTree = "<group>";
@@ -323,6 +332,7 @@
 			files = (
 				0C4A68FD2C75CA0700E36B1B /* LoginViewController.swift in Sources */,
 				0C4A69292C75ED4300E36B1B /* SpecificBoardVC.swift in Sources */,
+				0C733FEE2C9247840060B141 /* RequestOrBoardVC.swift in Sources */,
 				0C4A68E92C75C80B00E36B1B /* ViewController.swift in Sources */,
 				0C4A69352C775A3600E36B1B /* DemandVC.swift in Sources */,
 				0C4A68FF2C75CA1400E36B1B /* RegisterViewController.swift in Sources */,
@@ -335,9 +345,11 @@
 				0C4A69212C75DBC600E36B1B /* Buttons.swift in Sources */,
 				0C4A68E52C75C80B00E36B1B /* AppDelegate.swift in Sources */,
 				0C4A68E72C75C80B00E36B1B /* SceneDelegate.swift in Sources */,
+				0C4A69372C776D6800E36B1B /* MainViewController.swift in Sources */,
 				0C4A68FB2C75C9EF00E36B1B /* WebViewController.swift in Sources */,
 				0C4A69302C772B3300E36B1B /* CategoryManager.swift in Sources */,
 				0C4A68F92C75C9DF00E36B1B /* SplashViewController.swift in Sources */,
+				0C733FF02C924AC60060B141 /* infoVC.swift in Sources */,
 				0C4A69232C75DCE300E36B1B /* cells.swift in Sources */,
 				0C4A69092C75CB5600E36B1B /* DatabaseManager.swift in Sources */,
 				0C4A69182C75D2D100E36B1B /* ProfileViewController.swift in Sources */,
@@ -505,6 +517,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -534,6 +547,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

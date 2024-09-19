@@ -18,50 +18,6 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
     
     var new_user_id : String?
     var registraion_FB_completed : Bool = false
-
-    let allowedCountries = [
-        ("🇺🇸 USA", "+1"),
-        ("🇮🇱 Israel", "+972"),
-        ("🇦🇹 Austria", "+43"),
-        ("🇦🇿 Azerbaijan", "+994"),
-        ("🇧🇪 Belgium", "+32"),
-        ("🇧🇬 Bulgaria", "+32"),
-        ("🇨🇦 Canada", "+1"),
-        ("🇭🇷 Croatia", "+385"),
-        ("🇨🇿 Czechia", "+420"),
-        ("🇩🇰 Denmark", "+45"),
-        ("🇫🇮 Finland", "+358"),
-        ("🇫🇷 France", "+33"),
-        ("🇬🇪 Georgia", "+995"),
-        ("🇩🇪 Germany", "+49"),
-        ("🇬🇷 Greece", "+30"),
-        ("🇭🇺 Hungary", "+36"),
-        ("🇮🇸 Iceland", "+354"),
-        ("🇮🇪 Ireland", "+353"),
-        ("🇮🇱 Israel", "+972"),
-        ("🇮🇹 Italy", "+39"),
-        ("🇱🇹 Lithuania", "+370"),
-        ("🇱🇺 Luxembourg", "+352"),
-        ("🇲🇹 Malta", "+356"),
-        ("🇲🇨 Monaco", "+377"),
-        ("🇳🇱 Netherlands", "+31"),
-        ("🇳🇴 Norway", "+47"),
-        ("🇵🇱 Poland", "+48"),
-        ("🇵🇹 Portugal", "+351"),
-        ("🇷🇴 Romania", "+40"),
-        ("🇷🇸 Serbia", "+381"),
-        ("🇸🇰 Slovakia", "+421"),
-        ("🇸🇮 Slovenia", "+386"),
-        ("🇪🇸 Spain", "+34"),
-        ("🇸🇪 Sweden", "+46"),
-        ("🇨🇭 Switzerland", "+41"),
-        ("🇬🇧 United Kingdom", "+44"),
-        ("🇺🇸 USA", "+1")
-    ]
-
-    private let countryPicker = UIPickerView()
-
-    private var complete_phone : String?
     
     private let scrollView : UIScrollView = {
         let scrollView = UIScrollView()
@@ -76,88 +32,120 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         return imageView
     }()
     
-    private let firstNameField : UITextField = {
+    private let firstNameField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .sentences
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "First Name..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.layer.borderWidth = 1
+        field.placeholder = "שם פרטי..." // Hebrew placeholder
         field.leftViewMode = .always
         field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         return field
     }()
-    
-    private let lastNameField : UITextField = {
+
+    private let lastNameField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .sentences
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Last Name..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.layer.borderWidth = 1
+        field.placeholder = "שם משפחה..." // Hebrew placeholder
         field.leftViewMode = .always
         field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         return field
     }()
     
-    private let emailField : UITextField = {
+    private let originalCityField: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .sentences
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.layer.cornerRadius = 12
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderWidth = 1
+        field.placeholder = "יישוב בת״ז" // Hebrew placeholder
+        field.leftViewMode = .always
+        field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
+        return field
+    }()
+    
+    private let currentCityField: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .sentences
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.layer.cornerRadius = 12
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderWidth = 1
+        field.placeholder = "יישוב נוכחי"
+        field.leftViewMode = .always
+        field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
+        return field
+    }()
+
+    private let emailField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Email Address..."
+        field.layer.borderWidth = 1
+        field.placeholder = "כתובת אימייל..." // Hebrew placeholder
         field.leftViewMode = .always
         field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         field.textContentType = .emailAddress
         field.keyboardType = .emailAddress
         return field
     }()
     
-    private let countryCodeField: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.layer.cornerRadius = 12
-        field.layer.borderColor = UIColor.lightGray.cgColor
-        field.leftViewMode = .always
-        field.backgroundColor = UIColor.white
-        field.placeholder = "Code"
-        return field
-    }()
-
-    private let phoneField : UITextField = {
+    private let phoneField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 12
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Phone (Use the same in authentication)"
+        field.layer.borderWidth = 1
+        field.placeholder = "מספר טלפון..." // Hebrew placeholder
         field.leftViewMode = .always
         field.textContentType = .telephoneNumber
         field.keyboardType = .numberPad
         field.backgroundColor = UIColor.white
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         return field
     }()
-    
-    private let passwordField : UITextField = {
+
+    private let passwordField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .done
         field.layer.cornerRadius = 12
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Password..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.layer.borderWidth = 1
+        field.placeholder = "סיסמה..." // Hebrew placeholder
         field.leftViewMode = .always
         field.backgroundColor = UIColor.white
         field.isSecureTextEntry = true
+        field.textAlignment = .right // Align text to the right
+        field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         return field
     }()
     
@@ -166,19 +154,18 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear // or match your background
-        textView.textAlignment = .center
+        textView.textAlignment = .right
         textView.linkTextAttributes = [
             .foregroundColor: UIColor.link
         ]
         return textView
     }()
 
-
     private let registerButton : UIButton = {
         let button = UIButton()
-        button.backgroundColor = .clear
-        button.setTitle("SIGN UP", for: .normal)
-        button.setTitleColor(.link, for: .normal)
+        button.backgroundColor = .link
+        button.setTitle("הרשמה", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.layer.borderColor = UIColor.gray.cgColor // Specify your desired color
@@ -189,7 +176,7 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Create Account"
+        title = "פתיחת חשבון"
         view.backgroundColor = UIColor.white
         
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
@@ -200,15 +187,18 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         firstNameField.leftView =  createLeftViewWithIcon(named: "person.fill")
-        lastNameField.leftView =  createLeftViewWithIcon(named: "person.3.fill")
+        lastNameField.leftView =  createLeftViewWithIcon(named: "building")
+        originalCityField.leftView =  createLeftViewWithIcon(named: "person.3.fill")
+        currentCityField.leftView =  createLeftViewWithIcon(named: "person.3.fill")
         emailField.leftView = createLeftViewWithIcon(named: "envelope.fill")
-        countryCodeField.leftView = createLeftViewWithIcon(named: "phone.fill")
+        phoneField.leftView = createLeftViewWithIcon(named: "phone.fill")
         passwordField.leftView = createLeftViewWithIcon(named: "lock.fill")
         
         firstNameField.delegate = self
         lastNameField.delegate = self
+        originalCityField.delegate = self
+        currentCityField.delegate = self
         emailField.delegate = self
-        countryCodeField.delegate = self
         phoneField.delegate = self
         passwordField.delegate = self
         
@@ -216,15 +206,14 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         scrollView.addSubview(imageView)
         scrollView.addSubview(firstNameField)
         scrollView.addSubview(lastNameField)
+        scrollView.addSubview(originalCityField)
+        scrollView.addSubview(currentCityField)
         scrollView.addSubview(emailField)
-        scrollView.addSubview(countryCodeField)
         scrollView.addSubview(phoneField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(registerButton)
         
-        setupCountryPicker()
         addlinksToAgreementLabel()
-
     }
     
     
@@ -238,9 +227,10 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         imageView.frame = CGRect(x: (scrollView.width - size)/2, y: 20, width: size, height: size)
         firstNameField.frame = CGRect(x: 30, y: imageView.bottom + 15, width: scrollView.width-60, height: 32)
         lastNameField.frame = CGRect(x: 30, y: firstNameField.bottom + 30, width: scrollView.width-60, height: 32)
-        emailField.frame = CGRect(x: 30, y: lastNameField.bottom + 30, width: scrollView.width-60, height: 32)
-        countryCodeField.frame = CGRect(x: 30, y: emailField.bottom+30, width: (scrollView.width-60)/4, height: 32)
-        phoneField.frame = CGRect(x: countryCodeField.right, y: emailField.bottom+30, width: scrollView.width-60, height: 32)
+        originalCityField.frame = CGRect(x: 30, y: lastNameField.bottom + 30, width: scrollView.width-60, height: 32)
+        currentCityField.frame = CGRect(x: 30, y: originalCityField.bottom + 30, width: scrollView.width-60, height: 32)
+        emailField.frame = CGRect(x: 30, y: currentCityField.bottom + 30, width: scrollView.width-60, height: 32)
+        phoneField.frame = CGRect(x: 30, y: emailField.bottom+30, width: (scrollView.width-60), height: 32)
         passwordField.frame = CGRect(x: 30, y: phoneField.bottom+30, width: scrollView.width-60, height: 32)
         registerButton.frame = CGRect(x: 30, y: passwordField.bottom+30, width: scrollView.width-60, height: 32)
         agreementLabel.frame = CGRect(x: 30, y: registerButton.bottom+30, width: scrollView.width-60, height: 70)
@@ -256,7 +246,7 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
     
     func addlinksToAgreementLabel(){
         
-        let agreementText = "By signing up you agree to the Privacy Policy and Terms of Use."
+        let agreementText = "על ידי לחיצת הרשמה, את/ה מסכים/ה לתנאי השימוש ותנאי הפרטיות"
         let attributedString = NSMutableAttributedString(string: agreementText)
         
         // Configure link attributes
@@ -265,12 +255,12 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         ]
         
         // TODO Add link to Privacy Policy
-        if let privacyPolicyRange = agreementText.range(of: "Privacy Policy") {
+        if let privacyPolicyRange = agreementText.range(of: "ותנאי הפרטיות") {
             attributedString.addAttribute(.link, value: "https://solidarity.bringthemhomenow.net", range: NSRange(privacyPolicyRange, in: agreementText))
         }
         
         // Add link to Terms of Use
-        if let termsOfUseRange = agreementText.range(of: "Terms of Use") {
+        if let termsOfUseRange = agreementText.range(of: "לתנאי השימוש") {
             attributedString.addAttribute(.link, value: "https://bringthemhomenow.com", range: NSRange(termsOfUseRange, in: agreementText))
         }
         
@@ -302,23 +292,6 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         return leftView
     }
     
-    private func setupCountryPicker() {
-        countryPicker.delegate = self
-        countryPicker.dataSource = self
-        countryCodeField.inputView = countryPicker
-        
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(dismissCountryPicker))
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        countryCodeField.inputAccessoryView = toolBar
-    }
-
-    @objc private func dismissCountryPicker() {
-        view.endEditing(true)
-    }
-    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -327,25 +300,22 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
     @objc private func registerButtonTapped(){
         
         emailField.resignFirstResponder()
-        countryCodeField.resignFirstResponder()
         phoneField.resignFirstResponder()
         passwordField.resignFirstResponder()
         firstNameField.resignFirstResponder()
         lastNameField.resignFirstResponder()
-        
-        guard let firstName = firstNameField.text, let lastName = lastNameField.text, let email = emailField.text,
-                let code = countryCodeField.text,  var phone = phoneField.text, let password = passwordField.text,
-              !firstName.isEmpty, !lastName.isEmpty, !email.isEmpty, isValidEmail(email), !code.isEmpty, !phone.isEmpty, !password.isEmpty, password.count >= 6 else {
+        originalCityField.resignFirstResponder()
+        currentCityField.resignFirstResponder()
+
+        guard let firstName = firstNameField.text, let lastName = lastNameField.text, let originalCity = originalCityField.text, let currentCity = currentCityField.text, let email = emailField.text,
+                var phone = phoneField.text, let password = passwordField.text,
+              !firstName.isEmpty, !lastName.isEmpty, !email.isEmpty, isValidEmail(email), !phone.isEmpty, !password.isEmpty, password.count >= 6 else {
             alertUserRegisterError(message: "Please enter all information to register, check your email address")
                 return
         }
-        if phone.first == "0" {
-            phone = String(phone.dropFirst())
-        }
-        self.complete_phone = code+phone
         SpinnerManager.shared.showSpinner()
         print("registerButtonTapped before userExists")
-        DatabaseManager.shared.userExists(email: email, phoneNumber: complete_phone ?? "", completion: { [weak self] exist in
+        DatabaseManager.shared.userExists(email: email, phoneNumber: phone, completion: { [weak self] exist in
             guard let strongSelf = self else{
                 return
             }
@@ -362,26 +332,21 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
     
     func registerToFireBase(){
         
-        guard let firstName = firstNameField.text, let lastName = lastNameField.text, let email = emailField.text,
-              let code = countryCodeField.text,  var phone = phoneField.text, let password = passwordField.text,
-              !firstName.isEmpty, !lastName.isEmpty, !email.isEmpty, !code.isEmpty, !phone.isEmpty, !password.isEmpty, password.count >= 6 else {
-            alertUserRegisterError(message: "please enter all information to register")
+        guard let firstName = firstNameField.text, let lastName = lastNameField.text, let originalCity = originalCityField.text, let currentCity = currentCityField.text, let email = emailField.text,
+              var phone = phoneField.text, let password = passwordField.text,
+              !firstName.isEmpty, !lastName.isEmpty, !email.isEmpty, !phone.isEmpty, !password.isEmpty, password.count >= 6 else {
+            alertUserRegisterError(message: "בבקשה מלא את כל השדות על מנת להירשם")
             return
         }
-        if phone.first == "0" {
-            phone = String(phone.dropFirst())
-        }
-        self.complete_phone = code+phone
-        print("registerToFireBase before createUser")
         FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { [weak self] authResult, error in
             guard let strongSelf = self else{
                 return
             }
             guard let result = authResult, error == nil else{
-                strongSelf.alertUserRegisterError(message: "Email Address is already in use")
+                strongSelf.alertUserRegisterError(message: "כתובת המייל שהוזנה כבר בשימוש")
                 return
             }
-            let newUser = User(id: result.user.uid, firstName: firstName, lastName: lastName, email: email, requests: [], phoneNumber: code+phone)
+            let newUser = User(id: result.user.uid, firstName: firstName, lastName: lastName, email: email, requests: [], phoneNumber: phone)
             DatabaseManager.shared.insertUser(with: newUser, completion: {success in
                 if !success{
                     return
@@ -389,37 +354,37 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
                 UserDefaults.standard.set(newUser.id, forKey: "User ID")
                 UserDefaults.standard.set(firstName + " " + lastName, forKey: "name")
                 UserDefaults.standard.set(email, forKey: "email")
+                UserDefaults.standard.set(originalCity, forKey: "originalCity")
+                UserDefaults.standard.set(currentCity, forKey: "currentCity")
+                UserDefaults.standard.set(phone, forKey: "phone")
                 strongSelf.onRegistrationSuccess?(newUser.id)
             })
         })
     }
     
     func alertUserRegisterError(message:String){
-        let alert = UIAlertController(title: "Attention", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "dismiss", style: .cancel, handler: nil))
+        let alert = UIAlertController(title: "שים לב", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "אוקיי", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
 }
 
-extension RegisterViewController : UITextFieldDelegate {
+extension RegisterViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if textField == firstNameField{
+        if textField == firstNameField {
             lastNameField.becomeFirstResponder()
-        }
-        else if textField == lastNameField{
-//            if !isValidEmail(emailField.text){
-//                return false
-//            }
+        } else if textField == lastNameField {
+            originalCityField.becomeFirstResponder()
+        } else if textField == originalCityField {
+            currentCityField.becomeFirstResponder()
+        } else if textField == currentCityField {
             emailField.becomeFirstResponder()
-        }
-        else if textField == emailField{
+        } else if textField == emailField {
             phoneField.becomeFirstResponder()
-        }
-        else if textField == phoneField{
+        } else if textField == phoneField {
             view.endEditing(true)
-        }
-        else if textField == passwordField{
+        } else if textField == passwordField {
             view.endEditing(true)
         }
         return true
@@ -432,7 +397,6 @@ extension RegisterViewController : UITextFieldDelegate {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: email)
     }
-
     
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
@@ -445,29 +409,34 @@ extension RegisterViewController : UITextFieldDelegate {
     }
     
     func adjustViewFrameForKeyboard(showing: Bool, keyboardHeight: CGFloat) {
+        guard let activeField = view.findFirstResponder() as? UITextField else { return }
+        
         if showing {
-            self.view.frame.origin.y = -keyboardHeight/2.3
+            let fieldFrame = scrollView.convert(activeField.frame, to: view)
+            let fieldBottomY = fieldFrame.origin.y + fieldFrame.height
+            let visibleAreaHeight = view.frame.height - keyboardHeight
+            
+            if fieldBottomY > visibleAreaHeight {
+                let offset = fieldBottomY - visibleAreaHeight + 20 // Add some padding
+                self.view.frame.origin.y = -offset
+            }
         } else {
             self.view.frame.origin.y = 0
         }
     }
 }
 
-extension RegisterViewController : UIPickerViewDelegate, UIPickerViewDataSource{
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return allowedCountries.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(allowedCountries[row].0) (\(allowedCountries[row].1))"
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let country = allowedCountries[row]
-        countryCodeField.text = country.1
+extension UIView {
+    // Helper method to find the first responder
+    func findFirstResponder() -> UIResponder? {
+        if self.isFirstResponder {
+            return self
+        }
+        for subview in self.subviews {
+            if let responder = subview.findFirstResponder() {
+                return responder
+            }
+        }
+        return nil
     }
 }

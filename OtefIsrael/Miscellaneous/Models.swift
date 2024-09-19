@@ -16,6 +16,8 @@ struct User: Identifiable {
     var id = UUID().uuidString
     var firstName: String
     var lastName: String
+    var originalCity: String? = nil
+    var currentCity: String? = nil
     var email: String
     var requests: [String]
     var phoneNumber : String
@@ -24,6 +26,7 @@ struct User: Identifiable {
 struct UserRequest: Identifiable, Equatable, Codable {
     var id: String = UUID().uuidString
     var isDemand: Bool
+    var isPublic: Bool
     let title: String
     var categories: [String]
     var oldCity: String?

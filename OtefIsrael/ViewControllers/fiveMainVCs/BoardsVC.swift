@@ -21,7 +21,7 @@ class BoardsVC: UIViewController {
 
     let demandButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("לוח צרכים", for: .normal)
+        button.setTitle("לוח למתנדבים", for: .normal)
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
@@ -31,7 +31,7 @@ class BoardsVC: UIViewController {
 
     let supplyButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("לוח נתינות", for: .normal)
+        button.setTitle("לוח נתינה", for: .normal)
         button.backgroundColor = .systemGray
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
@@ -43,7 +43,7 @@ class BoardsVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        self.navigationItem.title = "לוח בקשות"
+        self.navigationItem.title = "לוחות קהילה"
 
         subtitleLabel.frame = CGRect(x: 16, y: 150, width: view.frame.width - 32, height: 30)
         demandButton.frame = CGRect(x: 50, y: subtitleLabel.frame.maxY + 20, width: view.frame.width - 100, height: 250)
@@ -64,13 +64,14 @@ class BoardsVC: UIViewController {
     
     @objc func opendemandVC() {
         let demandVC = SpecificBoardVC()
-        demandVC.isDemandBoard = true  // Set to true for demand board
+        demandVC.isDemandBoard = false  // Set to true for demand board
         navigationController?.pushViewController(demandVC, animated: true)
     }
 
     @objc func opensupplyVC() {
         let supplyVC = SpecificBoardVC()
-        supplyVC.isDemandBoard = false  // Set to false for supply board
+        supplyVC.isDemandBoard = true  // Set to false for supply board
         navigationController?.pushViewController(supplyVC, animated: true)
     }
 }
+

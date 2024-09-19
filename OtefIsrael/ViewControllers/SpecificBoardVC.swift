@@ -22,7 +22,7 @@ class RequestBoardHeaderView: UICollectionReusableView {
 
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "לוח צרכים" // Title in Hebrew
+        label.text = "לוח HELP" // Title in Hebrew
         label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textColor = .black
         label.textAlignment = .center
@@ -129,6 +129,7 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
         configureBoardContent()
         requestCollectionView.reloadData()
     }
+
     
     func setupCollectionView() {
         // Initialize the collection view with a flow layout
@@ -157,7 +158,7 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
     private func configureBoardContent() {
         DatabaseManager.shared.retrieveAllUserRequests { [weak self] userRequests in
             guard let self = self else { return }
-            self.requests = userRequests.filter { $0.isDemand == self.isDemandBoard }
+            self.requests = userRequests.filter { $0.isDemand == self.isDemandBoard && $0.isPublic }
             self.requestCollectionView.reloadData()
         }
     }
@@ -306,7 +307,7 @@ extension SpecificBoardVC: UICollectionViewDataSource, UICollectionViewDelegateF
             headerView.searchBar.showsCancelButton = true
             headerView.filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
             
-            headerView.titleLabel.text = isDemandBoard ? "לוח צרכים" : "לוח נתינות"
+            headerView.titleLabel.text = isDemandBoard ? "לוח נתינות" : "לוח HELP"
             headerView.subtitleLabel.text = isDemandBoard ? "ניתן לבחור מודעה ולקבל עוד פרטים על הצורך" : "ניתן לבחור מודעה ולקבל עוד פרטים על ההצעה"
             
             return headerView

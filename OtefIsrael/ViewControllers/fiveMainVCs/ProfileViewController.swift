@@ -20,17 +20,17 @@ class ProfileViewController: UIViewController {
     private var imageChanged: Bool = false
     
     var tableView1 = UITableView()
-    var selectOptions = ["הבקשות שלי", "Passengers Details", "Payment Methods", "Contact Us", "App Preferences", "Log Out"]
+    var selectOptions = ["צור קשר", "הגדרות", "פייסבוק", "מפתח האפליקציה", "דיווח על מישהו שזקוק לעזרה", "התנתקות", "מחק חשבון"]
     
     private let selectOptionSymbols: [UIImage?] = [
-        UIImage(systemName: "airplane")?.withRenderingMode(.alwaysTemplate),
-        UIImage(systemName: "person.2")?.withRenderingMode(.alwaysTemplate),
-        UIImage(systemName: "creditcard")?.withRenderingMode(.alwaysTemplate),
         UIImage(systemName: "envelope")?.withRenderingMode(.alwaysTemplate),
         UIImage(systemName: "gear")?.withRenderingMode(.alwaysTemplate),
-        UIImage(systemName: "door.left.hand.open")?.withRenderingMode(.alwaysTemplate)
+        UIImage(named: "facebook-square-fill")?.withRenderingMode(.alwaysTemplate),
+        UIImage(named: "linkedin-fill")?.withRenderingMode(.alwaysTemplate),
+        UIImage(systemName: "exclamationmark.bubble")?.withRenderingMode(.alwaysTemplate),
+        UIImage(systemName: "door.left.hand.open")?.withRenderingMode(.alwaysTemplate),
+        UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
     ]
-
     
     let headerView = UIView()
     
@@ -94,6 +94,33 @@ class ProfileViewController: UIViewController {
         field.textAlignment = .center
         return field
     }()
+    
+    private let phoneLabel : UILabel = {
+        let field = UILabel()
+        field.layer.cornerRadius = 12
+        field.text = "טלפון:"
+        field.font = .boldSystemFont(ofSize: 20)
+        field.textAlignment = .center
+        return field
+    }()
+    
+    private let currentCityLabel : UILabel = {
+        let field = UILabel()
+        field.layer.cornerRadius = 12
+        field.text = "יישוב נוכחי:"
+        field.font = .boldSystemFont(ofSize: 20)
+        field.textAlignment = .center
+        return field
+    }()
+    
+    private let oldCityLabel : UILabel = {
+        let field = UILabel()
+        field.layer.cornerRadius = 12
+        field.text = "יישוב בת.ז:"
+        field.font = .boldSystemFont(ofSize: 20)
+        field.textAlignment = .center
+        return field
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +148,10 @@ class ProfileViewController: UIViewController {
         headerView.addSubview(imageView)
         headerView.addSubview(nameLabel)
         headerView.addSubview(emailLabel)
-        
+        headerView.addSubview(phoneLabel)
+        headerView.addSubview(currentCityLabel)
+        headerView.addSubview(oldCityLabel)
+
         // Set the background color of headerView to blue
 //        headerView.backgroundColor = UIColor.red
         headerImageView.frame = headerView.bounds
@@ -138,6 +168,15 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
 //        validateAuth()
         setApperance()
+        
+        guard let user_id = Auth.auth().currentUser?.uid else {
+            let vc = LoginViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+            print("User is not logged in")
+            return
+        }
     }
     
     
@@ -166,6 +205,14 @@ class ProfileViewController: UIViewController {
         let fileName = user_id + "_profile_picture.png"
         let path = "profilePics/" + fileName
 
+        if let originalCity = UserDefaults.standard.value(forKey: "originalCity") as? String,
+           let currentCity = UserDefaults.standard.value(forKey: "currentCity") as? String{
+            currentCityLabel.text = "יישוב נוכחי : \(currentCity)"
+            oldCityLabel.text = "יישוב בת.ז : \(originalCity)"
+        }
+        if let phone = UserDefaults.standard.value(forKey: "phone") as? String{
+            phoneLabel.text = "טלפון : \(phone)"
+        }
         
         StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             
@@ -184,9 +231,10 @@ class ProfileViewController: UIViewController {
             }
         })
         
-        nameLabel.text = name
+        nameLabel.text = "שם : \(name)"
         self.navigationItem.title = name
-        emailLabel.text = email
+        emailLabel.text = "אימייל : \(email)"
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -197,9 +245,12 @@ class ProfileViewController: UIViewController {
         imageView.frame = CGRect(x: (view.bounds.width - size) / 2, y: 10, width: size, height: size)
         nameLabel.frame = CGRect(x: 30, y: imageView.frame.maxY + 10, width: view.bounds.width - 60, height: 32)
         emailLabel.frame = CGRect(x: 30, y: nameLabel.frame.maxY + 10, width: view.bounds.width - 60, height: 32)
-        
+        phoneLabel.frame = CGRect(x: 30, y: emailLabel.frame.maxY + 10, width: view.bounds.width - 60, height: 32)
+        currentCityLabel.frame = CGRect(x: 30, y: phoneLabel.frame.maxY + 10, width: view.bounds.width - 60, height: 32)
+        oldCityLabel.frame = CGRect(x: 30, y: currentCityLabel.frame.maxY + 10, width: view.bounds.width - 60, height: 32)
+
         // Set the frame for the headerView based on its subviews
-        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: emailLabel.frame.maxY + 20 + 10)
+        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: oldCityLabel.frame.maxY + 20 + 10)
         
         // Assign the headerView to the tableHeaderView property of your tableView
         tableView1.tableHeaderView = headerView
@@ -214,7 +265,7 @@ class ProfileViewController: UIViewController {
     @objc private func logoutButtonTapped(){
         
         let actionSheet = UIAlertController(title: "", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
+        actionSheet.addAction(UIAlertAction(title: "התנתקות", style: .destructive, handler: { [weak self] _ in
             
             guard let strongSelf = self else {
                 return
@@ -222,8 +273,14 @@ class ProfileViewController: UIViewController {
             UserDefaults.standard.setValue(nil, forKey: "email")
             UserDefaults.standard.setValue(nil, forKey: "User ID")
             UserDefaults.standard.setValue(nil, forKey: "name")
+            UserDefaults.standard.setValue(nil, forKey: "originalCity")
+            UserDefaults.standard.setValue(nil, forKey: "currentCity")
+            UserDefaults.standard.setValue(nil, forKey: "phone")
             strongSelf.imageView.image = UIImage(systemName: "person.circle")
             strongSelf.emailLabel.text = " "
+            strongSelf.phoneLabel.text = " "
+            strongSelf.currentCityLabel.text = " "
+            strongSelf.oldCityLabel.text = " "
             strongSelf.nameLabel.text = " "
             
             do {//todo big check here (about vc on success)
@@ -234,7 +291,7 @@ class ProfileViewController: UIViewController {
                 strongSelf.present(nav, animated: true)
             }
             catch {
-                print("Failed to log out")
+                print("Failed to התנתקות")
             }
         }))
         
@@ -244,59 +301,6 @@ class ProfileViewController: UIViewController {
         
         self.present(actionSheet, animated: true)
     }
-    
-    ///if user clicks on his requests so he can see all his requests
-    private func showMyRequests(){
-        
-        var userRequestsIDs = [String]()
-        
-        guard let user_id = UserDefaults.standard.value(forKey: "User ID") as? String else{
-            print("Can't retrieve user details from UserDefaults in profile")
-            return
-        }
-        DatabaseManager.shared.getUserData(with: user_id) { [weak self] (user) in
-            guard let strongSelf = self else{
-                return
-            }
-            if let user = user {
-                userRequestsIDs = user.requests
-            } else {
-                print("User not found in showMyRequests")
-            }
-            
-            strongSelf.userRequests = []
-                // TODO: do it
-//            for requestID in userRequestsIDs {
-//                if requestID != "dummy"{
-//                    DatabaseManager.shared.getRequestData(with: requestID) { [weak self] (request) in
-//                        guard let strongSelf = self else{
-//                            return
-//                        }
-//                        if let specificRequest = request {
-//                            strongSelf.userRequests.append(specificRequest)
-//                        } else {
-//                            print("Request not found in getUserRequests()")
-//                        }
-//                    }
-//                }
-//            }
-            
-            if strongSelf.requestsTableViewController.tableView != nil {
-                DispatchQueue.main.async {
-                    strongSelf.requestsTableViewController.tableView?.reloadData()
-                }
-            } else {
-                print("strongSelf.tableView is nil")
-            }
-            
-            // Create and configure the alert controller, depends if no requests or there are some requests to choose from
-            let alertController = strongSelf.userRequests.isEmpty ? (UIAlertController(title: "No Requests", message: "Create a new request!", preferredStyle: .actionSheet)) : (UIAlertController(title: "My Requests", message: "Choose an request!", preferredStyle: .actionSheet))
-            alertController.setValue(strongSelf.requestsTableViewController, forKey: "contentViewController")
-            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            strongSelf.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
 }
 
 
@@ -312,105 +316,73 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource, MFM
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == tableView1{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            let option = selectOptions[indexPath.row]
-            cell.textLabel?.text = option
-            if let symbol = selectOptionSymbols[indexPath.row] {
-                cell.imageView?.image = symbol
-                cell.imageView?.tintColor = .black
-            }
-            cell.accessoryType = .disclosureIndicator
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let option = selectOptions[indexPath.row]
+        cell.textLabel?.text = option
+        if let symbol = selectOptionSymbols[indexPath.row] {
+            cell.imageView?.image = symbol
+            cell.imageView?.tintColor = .black
         }
-        else{ // my requests
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            cell.textLabel?.textColor = .link
-            cell.textLabel?.textAlignment = .center
-            
-            if userRequests.isEmpty {
-                cell.textLabel?.text = "Create Request"
-            } else {
-                // Display cells with request details
-                let request = userRequests[indexPath.row]
-                cell.textLabel?.text = request.title
-                cell.textLabel?.textAlignment = .left
-                let originalImage = segmentImages[0]
-                let imageSize = CGSize(width: 30, height: 30) // Set the desired size
-                let circularImage = makeCircularImage(from: originalImage, size: imageSize)
-                cell.imageView?.image = circularImage
-                //let scaledImage = originalImage.resize(to: imageSize)
-                //cell.imageView?.image = scaledImage
-                
-            }
-            return cell
-        }
+        cell.accessoryType = .disclosureIndicator
+        return cell
+        
     }
 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if tableView == tableView1{
+        // Handle cell selection based on the selected option
+        switch selectOptions[indexPath.row] {
+        case "Passengers Details":
+            print("Terms of Use")
+        case "Payment Methods":
+            print("Payment Methods screen to view/edit/add Payments")
+        case "צור קשר":
+            // Check if the device can send email
+            if MFMailComposeViewController.canSendMail() {
+                // Create a mail composer
+                let mailComposer = MFMailComposeViewController()
+                mailComposer.mailComposeDelegate = self
+                mailComposer.setToRecipients(["milis1michael@gmail.com"])
+                mailComposer.setSubject("יצירת קשר דרך אפליקציית עוטף ישראל")
+                present(mailComposer, animated: true, completion: nil)
+            } else {
+                // Show an alert if the device can't send email
+                let alertController = UIAlertController(title: "שגיאה", message: "המכשיר שלך אינו תומך בשליחת מיילים", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "אוקיי", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
+        case "פייסבוק":
+            let facebookGroupURL = "https://www.facebook.com/groups/3538241003109652/"
             
-            // Handle cell selection based on the selected option
-            switch selectOptions[indexPath.row] {
-            case "My Requests":
-                self.showMyRequests()
-            case "Passengers Details":
-                print("Terms of Use")
-            case "Payment Methods":
-                print("Payment Methods screen to view/edit/add Payments")
-            case "Contact Us":
-                // Check if the device can send email
-                if MFMailComposeViewController.canSendMail() {
-                    // Create a mail composer
-                    let mailComposer = MFMailComposeViewController()
-                    mailComposer.mailComposeDelegate = self
-                    mailComposer.setToRecipients(["zohar@gmail.com"])
-                    mailComposer.setSubject("Contact Us from BringThemHomeNow App")
-                    present(mailComposer, animated: true, completion: nil)
-                } else {
-                    // Show an alert if the device can't send email
-                    let alertController = UIAlertController(title: "Error", message: "Your device doesn't support sending emails.", preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    present(alertController, animated: true, completion: nil)
-                }
-            case "Terms of Use":
-                print("Terms of Use")
-            case "Privacy Policy":
-                // Navigate to the Privacy Policy page
-                performSegue(withIdentifier: "PrivacyPolicySegueIdentifier", sender: nil)
-            case "Log Out":
-                self.logoutButtonTapped()
-            default:
-                break
+            // Check if the URL can be opened
+            if let url = URL(string: facebookGroupURL) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                // Handle the error if the URL is invalid
+                let alert = UIAlertController(title: "שגיאה", message: "לא ניתן לפתוח את קבוצת הפייסבוק", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "אוקיי", style: .default))
+                present(alert, animated: true)
             }
-        }
-        else{ //requests table view
-            if !userRequests.isEmpty {
-                let selectedRequest = userRequests[indexPath.row]
-                // Dismiss any existing view controller before presenting RequestDetailsViewController
-                if let presentedViewController = presentedViewController {
-                    presentedViewController.dismiss(animated: true) {
-                        self.presentRequestDetails(for: selectedRequest)
-                    }
-                } else {
-                    // No view controller is currently being presented, proceed to present RequestDetailsViewController
-                    presentRequestDetails(for: selectedRequest)
-                }
+        case "מפתח האפליקציה":
+            let linkedInProfileURL = "https://www.linkedin.com/in/zohar-mosseri"
+            
+            // Check if the URL can be opened
+            if let url = URL(string: linkedInProfileURL) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                // Handle the error if the URL is invalid
+                let alert = UIAlertController(title: "שגיאה", message: "לא ניתן לפתוח לינקדאין, מפתח האפליקציה הוא זוהר מוסרי.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "אוקיי", style: .default))
+                present(alert, animated: true)
             }
-            else{ //isEmpty
-                // Dismiss any existing view controller before presenting RequestDetailsViewController
-                if let presentedViewController = presentedViewController {
-                    presentedViewController.dismiss(animated: true) {
-                        self.presentQuizVC()
-                    }
-                } else {
-                    // No view controller is currently being presented, proceed to present RequestDetailsViewController
-                    presentQuizVC()
-                }
-            }
+        case "התנתקות":
+            self.logoutButtonTapped()
+        case "מחק חשבון":
+            self.deleteAccountTapped()
+        default:
+            break
         }
     }
     
@@ -420,21 +392,71 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource, MFM
         controller.dismiss(animated: true, completion: nil)
     }
     
-    private func presentRequestDetails(for request: UserRequest) {
-//        let reviewBookingVC = ReviewBookingVC()
-//        reviewBookingVC.destinationName = request.destination
-//        reviewBookingVC.title = "Your Request to \(request.destination)"
-//        reviewBookingVC.request = request
-//        reviewBookingVC.isRequest = true
-//        let navigationController = UINavigationController(rootViewController: reviewBookingVC)
-//        present(navigationController, animated: true, completion: nil)
-        
-    }
-    
     private func presentQuizVC() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let createRequestVC = storyboard.instantiateViewController(withIdentifier: "ViewController") as? ViewController {
             present(createRequestVC, animated: true, completion: nil)
+        }
+    }
+}
+
+extension ProfileViewController{
+    @objc private func deleteAccountTapped() {
+        let alert = UIAlertController(title: "Delete Account", message: "Are you sure you want to delete your account? This action cannot be undone.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.sendDeletionRequestEmail()
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func sendDeletionRequestEmail() {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+
+        if MFMailComposeViewController.canSendMail() {
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            mailComposer.setToRecipients(["freedom.now.app@gmail.com"])
+            mailComposer.setSubject("User Account Deletion Request")
+            mailComposer.setMessageBody("User with ID: \(user.uid) and email: \(user.email ?? "") has requested account deletion. Please delete their data from the database manually.", isHTML: false)
+            present(mailComposer, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Your device doesn't support sending emails, please contact us at freedom.now.app@gmail.com.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+    }
+
+    private func deleteUserFromAuth() {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+
+        user.delete { error in
+            if let error = error {
+                // Handle error
+                print("Error deleting user: \(error.localizedDescription)")
+                let alert = UIAlertController(title: "Error", message: "There was an error deleting your account. Please try again, or contact us.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+
+            // Sign out the user and navigate to the login screen
+            do {
+                try Auth.auth().signOut()
+                let vc = LoginViewController()
+                let nav = UINavigationController(rootViewController: vc)
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true)
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+                let alert = UIAlertController(title: "Error", message: "There was an error signing out. Please try again.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
 }

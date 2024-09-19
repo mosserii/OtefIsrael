@@ -86,8 +86,10 @@ class DemandVC: UIViewController {
     @objc func openSecondVC() { // go to board
         let demandVC = SpecificBoardVC()
         demandVC.isDemandBoard = !self.isDemand
-        let nav = UINavigationController(rootViewController: demandVC)
-        nav.modalPresentationStyle = .fullScreen
-        present(nav, animated: true, completion: nil)
+        navigationController?.pushViewController(demandVC, animated: true)
+
+//        let nav = UINavigationController(rootViewController: demandVC)
+//        nav.modalPresentationStyle = .fullScreen
+//        present(nav, animated: true, completion: nil)
     }
 }
