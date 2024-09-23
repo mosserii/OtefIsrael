@@ -97,7 +97,7 @@ class RequestBoardHeaderView: UICollectionReusableView {
         backgroundImageView.frame = bounds
         
         // Layout for title and subtitle
-        titleLabel.frame = CGRect(x: 0, y: bounds.height / 2 - 50, width: bounds.width, height: 30)
+        titleLabel.frame = CGRect(x: 0, y: bounds.height / 2 - 100, width: bounds.width, height: 30)
         subtitleLabel.frame = CGRect(x: 0, y: titleLabel.frame.maxY, width: bounds.width, height: 20)
         
         // Layout for search bar
@@ -159,9 +159,27 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
         DatabaseManager.shared.retrieveAllUserRequests { [weak self] userRequests in
             guard let self = self else { return }
             self.requests = userRequests.filter { $0.isDemand == !self.isDemandBoard && $0.isPublic }
+            self.requests = self.sortRequestsByDate(self.requests)
             self.requestCollectionView.reloadData()
         }
     }
+
+    private func sortRequestsByDate(_ requests: [UserRequest]) -> [UserRequest] {
+        let today = Date()
+
+        // Split the requests into future and past
+        let futureRequests = requests.filter { $0.date ?? Date.now >= today }
+        let pastRequests = requests.filter { $0.date ?? Date.now < today }
+
+        // Sort future requests by ascending date and past requests by descending date
+        let sortedFutureRequests = futureRequests.sorted(by: { $0.date ?? Date.now < $1.date ?? Date.now })
+        let sortedPastRequests = pastRequests.sorted(by: { $0.date ?? Date.now > $1.date ?? Date.now })
+
+        // Combine future requests first, followed by past requests
+        return sortedFutureRequests + sortedPastRequests
+    }
+
+
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -218,24 +236,6 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
         var filteredResults = requests
         for section in selectedFilters {
             switch section.title {
-//            case "סוג מוצר":
-//                let selectedCategories = section.options.filter { $0.isSelected }.map { $0.name }
-//                if !selectedCategories.isEmpty {
-//                    filteredResults = filteredResults.filter { request in
-//                        return !Set(request.categories).intersection(selectedCategories).isEmpty
-//                    }
-//                }
-//            case "מצב מוצר":
-//                let selectedConditions = section.options.filter { $0.isSelected }.map { $0.name }
-//                if !selectedConditions.isEmpty {
-//                    filteredResults = filteredResults.filter { request in
-//                        let inCategories = !Set(request.categories).intersection(selectedConditions).isEmpty
-//                        let inDescription = selectedConditions.contains { condition in
-//                            request.description?.contains(condition) ?? false
-//                        }
-//                        return inCategories || inDescription
-//                    }
-//                }
             case "קטגוריה":
                 let selectedCategories = section.options.filter { $0.isSelected }.map { $0.name }
                 if !selectedCategories.isEmpty {

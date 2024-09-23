@@ -14,6 +14,7 @@ import Foundation
 
 struct User: Identifiable {
     var id = UUID().uuidString
+    var isAdmin: Bool
     var firstName: String
     var lastName: String
     var originalCity: String? = nil
@@ -53,7 +54,7 @@ struct UserRequest: Identifiable, Equatable, Codable {
 
 struct Category: Codable, Equatable {
     var category: String
-    var image_id: String? = nil
+    var image_id: String
     
     static func == (lhs: Category, rhs: Category) -> Bool {
         return lhs.category == rhs.category && lhs.image_id == rhs.image_id

@@ -124,17 +124,26 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationItem.title = "פרופיל"
-        navigationController?.navigationBar.prefersLargeTitles = true
 
+        let titleLabel = UILabel()
+        titleLabel.text = "פרופיל"
+        titleLabel.textAlignment = .right // Align the text to the right
+        titleLabel.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        titleLabel.sizeToFit()
+
+        // Set the custom UILabel as the title view
+        self.navigationItem.titleView = titleLabel
+
+        // Enable large titles if needed
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         requestsTableViewController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         // Create a table view controller
         requestsTableViewController.tableView.delegate = self
         requestsTableViewController.tableView.dataSource = self
         
-        tableView1.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView1.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView1.register(InfoTableViewCell.self, forCellReuseIdentifier: "InfoTableViewCell")
         tableView1.delegate = self
         tableView1.dataSource = self
 
@@ -161,8 +170,26 @@ class ProfileViewController: UIViewController {
 
         
         setApperance()
-
+        
+        DatabaseManager.shared.checkIfUserIsAdmin { [weak self] isAdmin in
+            guard let self = self else { return }
+            if isAdmin {
+                self.addAdminButton()
+            }
+        }
     }
+    
+    private func addAdminButton() {
+        let adminButton = UIBarButtonItem(title: "Admin", style: .plain, target: self, action: #selector(openAdminNotifications))
+        navigationItem.leftBarButtonItem = adminButton
+    }
+
+    @objc private func openAdminNotifications() {
+        let adminNotificationsVC = AdminNotificationsVC()
+        let navController = UINavigationController(rootViewController: adminNotificationsVC)
+        present(navController, animated: true, completion: nil)
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -232,7 +259,7 @@ class ProfileViewController: UIViewController {
         })
         
         nameLabel.text = "שם : \(name)"
-        self.navigationItem.title = name
+        //self.navigationItem.title = name
         emailLabel.text = "אימייל : \(email)"
 
     }
@@ -315,18 +342,31 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource, MFM
         }
     }
 
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+//        let option = selectOptions[indexPath.row]
+//        cell.textLabel?.text = option
+//        if let symbol = selectOptionSymbols[indexPath.row] {
+//            cell.imageView?.image = symbol
+//            cell.imageView?.tintColor = .black
+//        }
+//        cell.accessoryType = .disclosureIndicator
+//        return cell
+//        
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InfoTableViewCell", for: indexPath) as! InfoTableViewCell
         let option = selectOptions[indexPath.row]
-        cell.textLabel?.text = option
-        if let symbol = selectOptionSymbols[indexPath.row] {
-            cell.imageView?.image = symbol
-            cell.imageView?.tintColor = .black
-        }
-        cell.accessoryType = .disclosureIndicator
-        return cell
+        cell.customLabel.text = option
         
+        if let symbol = selectOptionSymbols[indexPath.row] {
+            cell.customImageView.image = symbol
+        }
+        
+        return cell
     }
+
 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

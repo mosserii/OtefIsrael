@@ -154,7 +154,7 @@ extension categoriesVC: UICollectionViewDelegate {
         }
         let confirmAction = UIAlertAction(title: "אישור", style: .default) { [weak self] _ in
             if let customCategory = alertController.textFields?.first?.text, !customCategory.isEmpty {
-                let newCategory = Category(category: customCategory)
+                let newCategory = Category(category: customCategory, image_id: customCategory)
                 self?.didSelectCategory?(newCategory)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                     self?.dismiss(animated: true)

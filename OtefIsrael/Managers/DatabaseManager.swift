@@ -1,3 +1,4 @@
+
 //
 //  DatabaseManager.swift
 //  TripSmartFinder
@@ -50,6 +51,7 @@ extension DatabaseManager{
         // Prepare the user data dictionary to include all fields
         var userValues: [String: Any] = [
             "email": user.email,
+            "isAdmin": user.isAdmin,
             "phone": user.phoneNumber,
             "first_name": user.firstName,
             "last_name": user.lastName,
@@ -84,24 +86,35 @@ extension DatabaseManager{
                   let userEmail = userData["email"] as? String,
                   let userPhone = userData["phone"] as? String,
                   let firstName = userData["first_name"] as? String,
-                  let lastName = userData["last_name"] as? String,
-                  let requestsDict = userData["requests"] as? [String: Any] else {
+                  let lastName = userData["last_name"] as? String else {
                 print("Failed to get user data:")
                 print(snapshot.value as Any)
                 completion(nil)
                 return
             }
-            
+
             // Retrieve optional fields if they exist
             let originalCity = userData["original_city"] as? String
             let currentCity = userData["current_city"] as? String
-            
-            // Convert the keys of the requests dictionary to an array of strings
-            let requestsData = Array(requestsDict.keys)
-            
+
+            // Check if `isAdmin` is either a Bool or an Int (1 or 0)
+            let isAdmin: Bool
+            if let adminValue = userData["isAdmin"] as? Bool {
+                isAdmin = adminValue
+            } else if let adminValue = userData["isAdmin"] as? Int {
+                isAdmin = adminValue == 1
+            } else {
+                isAdmin = false // Default value if neither Bool nor Int
+            }
+
+            // Handle missing `requests` field by making it optional
+            let requestsDict = userData["requests"] as? [String: Any]
+            let requestsData = requestsDict != nil ? Array(requestsDict!.keys) : [] // Empty array if no requests
+
             // Create a User object with all the fields
             let user = User(
                 id: user_uid,
+                isAdmin: isAdmin,
                 firstName: firstName,
                 lastName: lastName,
                 originalCity: originalCity,
@@ -110,12 +123,51 @@ extension DatabaseManager{
                 requests: requestsData,
                 phoneNumber: userPhone
             )
-            
+
             completion(user)
-        
         }
     }
     
+    func checkIfUserIsAdmin(completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+
+        let ref = Database.database().reference()
+        ref.child("users").child(userId).child("isAdmin").observeSingleEvent(of: .value) { snapshot in
+            if let isAdmin = snapshot.value as? Bool {
+                completion(isAdmin)
+            } else {
+                completion(false)
+            }
+        }
+    }
+
+    func getAdminUserIds(completion: @escaping ([String]) -> Void) {
+        let ref = Database.database().reference().child("users")
+        ref.queryOrdered(byChild: "isAdmin").queryEqual(toValue: true).observeSingleEvent(of: .value) { snapshot in
+            var adminIds = [String]()
+            for child in snapshot.children.allObjects as? [DataSnapshot] ?? [] {
+                let adminId = child.key
+                adminIds.append(adminId)
+            }
+            completion(adminIds)
+        }
+    }
+    
+    func createNotificationForAdmin(adminID: String, request: UserRequest) {
+        let ref = Database.database().reference().child("notifications").child(adminID)
+        
+        let notificationData: [String: Any] = [
+            "title": "New Request for Managers",
+            "body": "A new request titled \(request.title) was submitted for review.",
+            "timestamp": Date().timeIntervalSince1970,
+            "requestId": request.id
+        ]
+        
+        ref.childByAutoId().setValue(notificationData)
+    }
 }
 
 
@@ -133,6 +185,18 @@ extension DatabaseManager {
         userRequest.id = requestId
         
         do {
+            
+            if !(userRequest.isPublic){
+                DatabaseManager.shared.getAdminUserIds { [weak self] adminUsers in
+                    guard let self = self else { return }
+                    print(adminUsers)
+                    // Create a notification for each admin
+                    for admin in adminUsers {
+                        DatabaseManager.shared.createNotificationForAdmin(adminID: admin, request: userRequest)
+                    }
+                }
+            }
+            
             let requestData = try JSONEncoder().encode(userRequest)
             let requestDict = try JSONSerialization.jsonObject(with: requestData, options: .allowFragments) as? [String: Any]
             

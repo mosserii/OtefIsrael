@@ -372,11 +372,8 @@ class CategoriesCell: UICollectionViewCell {
     
     func configure(answer: Category, imageName: String) {
         setupSubviews()  // Call setupSubviews here
-        if let systemImage = UIImage(systemName: imageName){
-            imageView.image = systemImage
-            if imageName == "airplane"{
-                print("airplane in : \(answer.category)")
-            }
+        if let namedImage = UIImage(systemName: answer.image_id){
+            imageView.image = namedImage
         }
         else if let namedImage = UIImage(named: answer.category){
             imageView.image = namedImage
@@ -387,9 +384,11 @@ class CategoriesCell: UICollectionViewCell {
         else if let imageName = CategoryManager.shared.getImageUrl(forAnswer: answer.category){
             imageView.sd_setImage(with: imageName, placeholderImage: UIImage(systemName: "airplane"))
         }
-        else if let optionImageID = answer.image_id {
-            let imageName = CategoryManager.shared.getImageUrl(forAnswer: optionImageID)
-            imageView.sd_setImage(with: imageName, placeholderImage: UIImage(systemName: "airplane"))
+        else if let systemImage = UIImage(systemName: imageName){
+            imageView.image = systemImage
+            if imageName == "airplane"{
+                print("airplane in : \(answer.category)")
+            }
         }
         imageView.tintColor = .link
         answerName.text = answer.category.capitalized
@@ -453,5 +452,65 @@ class FilterOptionCell: UITableViewCell {
     func configure(with option: FilterOption) {
         titleLabel.text = option.name
         checkboxButton.isSelected = option.isSelected
+    }
+}
+
+
+class InfoTableViewCell: UITableViewCell {
+    
+    let customImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
+        return imageView
+    }()
+    
+    let customLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right // Align text to the right
+        return label
+    }()
+    
+    let customDisclosureIndicator: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "chevron.left")
+        imageView.tintColor = .gray
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(customImageView)
+        contentView.addSubview(customLabel)
+        contentView.addSubview(customDisclosureIndicator)
+        
+        customImageView.translatesAutoresizingMaskIntoConstraints = false
+        customLabel.translatesAutoresizingMaskIntoConstraints = false
+        customDisclosureIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set up layout constraints for the custom image view, label, and disclosure indicator
+        NSLayoutConstraint.activate([
+            // Image view on the right
+            customImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            customImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            customImageView.widthAnchor.constraint(equalToConstant: 24),
+            customImageView.heightAnchor.constraint(equalToConstant: 24),
+            
+            // Label to the left of the image view
+            customLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40), // Space for the disclosure indicator
+            customLabel.trailingAnchor.constraint(equalTo: customImageView.leadingAnchor, constant: -8),
+            customLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
+            // Disclosure indicator on the left edge
+            customDisclosureIndicator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            customDisclosureIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            customDisclosureIndicator.widthAnchor.constraint(equalToConstant: 12),
+            customDisclosureIndicator.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

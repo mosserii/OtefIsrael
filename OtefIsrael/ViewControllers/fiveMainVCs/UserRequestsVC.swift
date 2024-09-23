@@ -30,7 +30,17 @@ class UserRequestsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "הבקשות שלי"
+        let titleLabel = UILabel()
+        titleLabel.text = "הבקשות שלי"
+        titleLabel.textAlignment = .right // Align the text to the right
+        titleLabel.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        titleLabel.sizeToFit()
+
+        // Set the custom UILabel as the title view
+        self.navigationItem.titleView = titleLabel
+
+        // Enable large titles if needed
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         tableView.register(ExploreEventCell.self, forCellReuseIdentifier: "ExploreEventCell")
         tableView.delegate = self
@@ -49,7 +59,7 @@ class UserRequestsVC: UIViewController {
         scrollView.frame = view.bounds
         
         tableView.frame = CGRect(x: 0, y: 10, width: scrollView.width, height: scrollView.height)
-        noRequestsLabel.frame = CGRect(x: 10, y: (view.height-100)/2, width: view.width-20, height: 100)
+        noRequestsLabel.frame = CGRect(x: 10, y: (view.height-200)/2, width: view.width-20, height: 100)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,7 +86,7 @@ class UserRequestsVC: UIViewController {
     private func checkForExpiredRequests() {
         expiredRequestsQueue = requests.filter { request in
             guard let requestDate = request.date else { return false }
-            return requestDate < Date() && !(request.isCompleted)
+            return requestDate < Date().addingTimeInterval(-86400) && !(request.isCompleted)
         }
         
         // Present the follow-up questions if there are expired requests

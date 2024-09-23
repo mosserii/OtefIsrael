@@ -346,7 +346,8 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
                 strongSelf.alertUserRegisterError(message: "כתובת המייל שהוזנה כבר בשימוש")
                 return
             }
-            let newUser = User(id: result.user.uid, firstName: firstName, lastName: lastName, email: email, requests: [], phoneNumber: phone)
+            
+            let newUser = User(id: result.user.uid, isAdmin: false, firstName: firstName, lastName: lastName, originalCity:originalCity, currentCity:currentCity, email: email, requests: [], phoneNumber: phone)
             DatabaseManager.shared.insertUser(with: newUser, completion: {success in
                 if !success{
                     return

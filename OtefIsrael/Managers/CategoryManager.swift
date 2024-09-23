@@ -14,16 +14,16 @@ class CategoryManager {
     static let shared = CategoryManager()
 
     var categories: [String: Category] = [
-        "furniture": Category(category: "תרומת ציוד", image_id: "math_image"),
-        "housing": Category(category: "מקום מגורים", image_id: "housing_image"),
-        "education": Category(category: "חינוך", image_id: "furniture_image"),
-        "events": Category(category: "אירועים", image_id: "furniture_image"),
-        "hosts": Category(category: "מארחים", image_id: "furniture_image"),
-        "workshops": Category(category: "חוגים וסדנאות", image_id: "furniture_image"),
-        "money": Category(category: "תרומה כספית", image_id: "furniture_image"),
-        "biocracy": Category(category: "בירוקרטיה", image_id: "furniture_image"),
-        "birthday": Category(category: "הפגת בדידות", image_id: "birthday_image"),
-        "other": Category(category: "אחר", image_id: "other_image"),
+        "furniture": Category(category: "תרומת ציוד", image_id: "bed.double.fill"),
+        "housing": Category(category: "מקום מגורים", image_id: "house.fill"),
+        "education": Category(category: "חינוך", image_id: "book.fill"),
+        "events": Category(category: "אירועים", image_id: "calendar"),
+        "hosts": Category(category: "מארחים", image_id: "person.3.fill"),
+        "workshops": Category(category: "חוגים וסדנאות", image_id: "paintbrush.fill"),
+        "money": Category(category: "תרומה כספית", image_id: "creditcard.fill"),
+        "biocracy": Category(category: "בירוקרטיה", image_id: "doc.fill"),
+        "birthday": Category(category: "הפגת בדידות", image_id: "gift.fill"),
+        "other": Category(category: "אחר", image_id: "questionmark.circle.fill")
     ]
     
     let answerSymbols: [String: String] = [
@@ -58,7 +58,6 @@ class CategoryManager {
         "nature": "mountain.2.fill",
         "Urban": "building.2.fill",
         "education": "graduationcap.fill",
-        "חינוך": "graduationcap.fill",
 
 
         "Public Transport" : "bus",
@@ -122,6 +121,7 @@ class CategoryManager {
         "12": "12.square.fill",
         "13": "13.square.fill",
         "14": "14.square.fill",
+        "חינוך": "graduationcap.fill",
         "ריהוט": "sofa.fill",
         "בית": "house.fill",
         "מתמטיקה": "textformat.123",

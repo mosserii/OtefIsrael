@@ -44,10 +44,21 @@ class infoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "מידע"
+        let titleLabel = UILabel()
+        titleLabel.text = "מידע"
+        titleLabel.textAlignment = .right // Align the text to the right
+        titleLabel.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        titleLabel.sizeToFit()
+
+        // Set the custom UILabel as the title view
+        self.navigationItem.titleView = titleLabel
+
+        // Enable large titles if needed
         navigationController?.navigationBar.prefersLargeTitles = true
 
-        tableView1.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView1.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView1.register(InfoTableViewCell.self, forCellReuseIdentifier: "InfoTableViewCell")
+
         tableView1.delegate = self
         tableView1.dataSource = self
 
@@ -75,18 +86,29 @@ extension infoVC: UITableViewDelegate, UITableViewDataSource, MFMailComposeViewC
         return selectOptions.count
     }
 
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+//        let option = selectOptions[indexPath.row]
+//        cell.textLabel?.text = option
+//        if let symbol = selectOptionSymbols[indexPath.row] {
+//            cell.imageView?.image = symbol
+//            cell.imageView?.tintColor = .black
+//        }
+//        cell.accessoryType = .disclosureIndicator
+//        return cell
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InfoTableViewCell", for: indexPath) as! InfoTableViewCell
         let option = selectOptions[indexPath.row]
-        cell.textLabel?.text = option
+        cell.customLabel.text = option
+        
         if let symbol = selectOptionSymbols[indexPath.row] {
-            cell.imageView?.image = symbol
-            cell.imageView?.tintColor = .black
+            cell.customImageView.image = symbol
         }
-        cell.accessoryType = .disclosureIndicator
+        
         return cell
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

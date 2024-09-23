@@ -36,8 +36,18 @@ class RequestOrBoardVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        self.navigationItem.title = "אני רוצה:"
+                
+        let titleLabel = UILabel()
+        titleLabel.text = "אני רוצה"
+        titleLabel.textAlignment = .right // Align the text to the right
+        titleLabel.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+        titleLabel.sizeToFit()
+
+        // Set the custom UILabel as the title view
+        self.navigationItem.titleView = titleLabel
+
+        // Enable large titles if needed
+        navigationController?.navigationBar.prefersLargeTitles = true
 
         boardButton.frame = CGRect(x: 50, y: 180, width: view.frame.width - 100, height: 250)
         requestButton.frame = CGRect(x: 50, y: boardButton.bottom + 50, width: view.frame.width - 100, height: 250)

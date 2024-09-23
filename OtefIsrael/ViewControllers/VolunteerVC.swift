@@ -315,7 +315,7 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
             self.dateLabel.text = "תאריך ההתנדבות"
         }
         
-        let continueButton = UIBarButtonItem(title: "הבא", style: .plain, target: self, action: #selector(saveButtonTapped))
+        let continueButton = UIBarButtonItem(title: "פרסם", style: .plain, target: self, action: #selector(saveButtonTapped))
         navigationItem.leftBarButtonItem = continueButton
                 
         if let request = requestToEdit {
