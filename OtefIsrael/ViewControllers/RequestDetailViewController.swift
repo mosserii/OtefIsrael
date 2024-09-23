@@ -9,11 +9,17 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import SDWebImage
+import MessageUI
+
 
 class RequestDetailViewController: UIViewController {
 
     var request: UserRequest?
     
+    var tappedMail: Bool?
+    var tappedPhone: Bool?
+    var sentMail: Bool?
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -131,6 +137,7 @@ class RequestDetailViewController: UIViewController {
         setupNavigationBar()
         configureRequestDetails()
         
+
         // Check if the current user is the owner of the request
         if let request = request, request.user_id == Auth.auth().currentUser?.uid {
             let editButton = UIBarButtonItem(title: "ערוך", style: .plain, target: self, action: #selector(editButtonTapped))
@@ -141,6 +148,49 @@ class RequestDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         imageTimer?.invalidate()
+
+        guard let existingRequest = request else{
+            return
+        }
+        let viewsTrue = (existingRequest.user_id == Auth.auth().currentUser?.uid) ? 0 : 1 //self viewing your ad does not count
+        let mailViewsTrue = (tappedMail ?? false) ? 1 : 0
+        let phoneViewsTrue = (tappedPhone ?? false) ? 1 : 0
+        let mailsSentTrue = (sentMail ?? false) ? 1 : 0
+
+        let updatedRequest = UserRequest(
+            id: existingRequest.id,
+            isDemand: existingRequest.isDemand,
+            isPublic: existingRequest.isPublic,
+            title: existingRequest.title,
+            categories: existingRequest.categories,
+            oldCity: existingRequest.oldCity,
+            currentCity: existingRequest.currentCity,
+            age: existingRequest.age,
+            date: existingRequest.date,
+            description: existingRequest.description,
+            user_id: existingRequest.user_id,
+            email: existingRequest.email,
+            phone: existingRequest.phone,
+            imageUrls: existingRequest.imageUrls,
+            views: existingRequest.views + viewsTrue,
+            mailViews: existingRequest.mailViews + mailViewsTrue,
+            phoneViews: existingRequest.phoneViews + phoneViewsTrue,
+            mailsSent: existingRequest.mailsSent + mailsSentTrue,
+            isCompleted: existingRequest.isCompleted,
+            feedback: existingRequest.feedback
+        )
+        
+        DatabaseManager.shared.updateUserRequest(userId: existingRequest.user_id, userRequest: updatedRequest) { success in
+            if success {
+                print("User request updated successfully")
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                print("Failed to update user request")
+                let alert = UIAlertController(title: "Error", message: "Failed to update your request. Please try again.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 
 
@@ -197,8 +247,6 @@ class RequestDetailViewController: UIViewController {
             setupImageCarousel(imageUrls: ["launchLogo"])
         }
     }
-
-
     
     private func setupNavigationBar() {
         // Back button
@@ -211,12 +259,33 @@ class RequestDetailViewController: UIViewController {
         navigationItem.rightBarButtonItem = shareButton
     }
     
+//    @objc private func emailButtonTapped() {
+//        guard let request = request, let email = request.email else { return }
+//        tappedMail = true
+//        if let emailUrl = createEmailUrl(to: email, subject: "פנייה בנוגע ל: \(request.title)", body: "") {
+//            UIApplication.shared.open(emailUrl)
+//        }
+//    }
+    
     @objc private func emailButtonTapped() {
         guard let request = request, let email = request.email else { return }
-        if let emailUrl = createEmailUrl(to: email, subject: "פנייה בנוגע ל: \(request.title)", body: "") {
-            UIApplication.shared.open(emailUrl)
+        tappedMail = true
+
+        if MFMailComposeViewController.canSendMail() {
+            let mailComposeVC = MFMailComposeViewController()
+            mailComposeVC.mailComposeDelegate = self
+            mailComposeVC.setToRecipients([email])
+            mailComposeVC.setSubject("פנייה בנוגע ל: \(request.title)")
+            mailComposeVC.setMessageBody("", isHTML: false)
+            
+            // Present the mail compose view controller
+            present(mailComposeVC, animated: true, completion: nil)
+        } else {
+            // Handle the case where the device can't send emails
+            print("Device cannot send emails")
         }
     }
+
 
     private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
         let subjectEncoded = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -233,6 +302,7 @@ class RequestDetailViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
+        tappedPhone = true
         if let phoneUrl = URL(string: "tel://\(phoneNumber)") {
             UIApplication.shared.open(phoneUrl)
         } else {
@@ -242,7 +312,6 @@ class RequestDetailViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
         }
     }
-
 
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
@@ -355,5 +424,25 @@ extension RequestDetailViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         startImageTimer()
+    }
+}
+
+extension RequestDetailViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        switch result {
+        case .sent:
+            sentMail = true
+            print("Email sent")
+        case .saved:
+            print("Email saved")
+        case .cancelled:
+            print("Email cancelled")
+        case .failed:
+            print("Email sending failed: \(error?.localizedDescription ?? "Unknown error")")
+        @unknown default:
+            print("Unknown result")
+        }
+
+        controller.dismiss(animated: true, completion: nil)
     }
 }

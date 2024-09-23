@@ -5,6 +5,8 @@ import FirebaseAuth
 class UserRequestsVC: UIViewController {
 
     private var requests = [UserRequest]()
+    private var expiredRequestsQueue = [UserRequest]()
+
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -65,6 +67,33 @@ class UserRequestsVC: UIViewController {
             self?.requests = requests
             self?.noRequestsLabel.isHidden = !requests.isEmpty
             self?.tableView.reloadData()
+            
+            // Check for any expired requests
+            self?.checkForExpiredRequests()
+        }
+    }
+    
+    private func checkForExpiredRequests() {
+        expiredRequestsQueue = requests.filter { request in
+            guard let requestDate = request.date else { return false }
+            return requestDate < Date() && !(request.isCompleted)
+        }
+        
+        // Present the follow-up questions if there are expired requests
+        presentNextFollowUpQuestion()
+    }
+
+    private func presentNextFollowUpQuestion() {
+        guard !expiredRequestsQueue.isEmpty else { return }
+        
+        let request = expiredRequestsQueue.removeFirst()
+        let followUpVC = FollowUpQuestionsVC()
+        followUpVC.request = request
+        let nav = UINavigationController(rootViewController: followUpVC)
+        
+        present(nav, animated: true) {
+            // Once the user dismisses the current VC, present the next one if available
+            self.presentNextFollowUpQuestion()
         }
     }
 }

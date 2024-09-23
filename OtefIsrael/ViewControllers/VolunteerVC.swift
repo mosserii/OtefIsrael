@@ -597,7 +597,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                 user_id: userId,
                 email: userEmail,
                 phone: userPhone,
-                imageUrls: []
+                imageUrls: [],
+                views: 0,
+                mailViews: 0,
+                phoneViews: 0,
+                mailsSent: 0,
+                isCompleted: false,
+                feedback: ""
             )
             
             DatabaseManager.shared.insertUserRequest(userId: userId, userRequest: newRequest) { success in
@@ -630,7 +636,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                         user_id: userId,
                         email: userEmail,
                         phone: userPhone,
-                        imageUrls: imageUrls
+                        imageUrls: imageUrls,
+                        views: 0,
+                        mailViews: 0,
+                        phoneViews: 0,
+                        mailsSent: 0,
+                        isCompleted: false,
+                        feedback: ""
                     )
                     
                     DatabaseManager.shared.insertUserRequest(userId: userId, userRequest: newRequest) { success in
@@ -673,7 +685,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                 user_id: userId,
                 email: userEmail,
                 phone: userPhone,
-                imageUrls: existingRequest.imageUrls // Keep existing image URLs
+                imageUrls: existingRequest.imageUrls, // Keep existing image URLs
+                views: existingRequest.views,
+                mailViews: existingRequest.mailViews,
+                phoneViews: existingRequest.phoneViews,
+                mailsSent: existingRequest.mailsSent,
+                isCompleted: false,
+                feedback: existingRequest.feedback
             )
             
             DatabaseManager.shared.updateUserRequest(userId: userId, userRequest: updatedRequest) { success in
@@ -691,6 +709,10 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
             // Update the request and upload new images
             StorageManager.shared.uploadRequestImages(requestId: existingRequest.id, images: images) { [weak self] result in
                 switch result {
+                    /*
+                     var isCompleted: Bool
+                     var feedback: String
+                     */
                 case .success(let imageUrls):
                     let updatedRequest = UserRequest(
                         id: existingRequest.id,
@@ -706,7 +728,13 @@ class VolunteerVC: UIViewController, UITextFieldDelegate {
                         user_id: userId,
                         email: userEmail,
                         phone: userPhone,
-                        imageUrls: imageUrls
+                        imageUrls: imageUrls,
+                        views: existingRequest.views,
+                        mailViews: existingRequest.mailViews,
+                        phoneViews: existingRequest.phoneViews,
+                        mailsSent: existingRequest.mailsSent,
+                        isCompleted: false,
+                        feedback: existingRequest.feedback
                     )
                     
                     DatabaseManager.shared.updateUserRequest(userId: userId, userRequest: updatedRequest) { success in

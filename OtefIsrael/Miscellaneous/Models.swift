@@ -38,6 +38,12 @@ struct UserRequest: Identifiable, Equatable, Codable {
     var email: String?
     var phone: String?
     var imageUrls: [String]?
+    var views: Int
+    var mailViews: Int
+    var phoneViews: Int
+    var mailsSent: Int
+    var isCompleted: Bool
+    var feedback: String
 
     static func == (lhs: UserRequest, rhs: UserRequest) -> Bool {
         return lhs.id == rhs.id

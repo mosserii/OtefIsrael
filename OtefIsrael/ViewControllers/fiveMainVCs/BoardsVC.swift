@@ -10,14 +10,14 @@ import UIKit
 
 class BoardsVC: UIViewController {
 
-    let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "בחר את הלוח המתאים על מנת לראות את המודעות"
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textColor = .gray
-        label.textAlignment = .center
-        return label
-    }()
+//    let subtitleLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "בחר את הלוח המתאים על מנת לראות את המודעות"
+//        label.font = UIFont.systemFont(ofSize: 18)
+//        label.textColor = .gray
+//        label.textAlignment = .center
+//        return label
+//    }()
 
     let demandButton: UIButton = {
         let button = UIButton(type: .system)
@@ -45,8 +45,8 @@ class BoardsVC: UIViewController {
         
         self.navigationItem.title = "לוחות קהילה"
 
-        subtitleLabel.frame = CGRect(x: 16, y: 150, width: view.frame.width - 32, height: 30)
-        demandButton.frame = CGRect(x: 50, y: subtitleLabel.frame.maxY + 20, width: view.frame.width - 100, height: 250)
+//        subtitleLabel.frame = CGRect(x: 16, y: 150, width: view.frame.width - 32, height: 30)
+        demandButton.frame = CGRect(x: 50, y: 180, width: view.frame.width - 100, height: 250)
         supplyButton.frame = CGRect(x: 50, y: demandButton.bottom + 50, width: view.frame.width - 100, height: 250)
         
         // Update the corner radius to match the button's height (for capsule shape)
@@ -57,7 +57,7 @@ class BoardsVC: UIViewController {
         demandButton.addTarget(self, action: #selector(opendemandVC), for: .touchUpInside)
         supplyButton.addTarget(self, action: #selector(opensupplyVC), for: .touchUpInside)
         
-        view.addSubview(subtitleLabel)
+//        view.addSubview(subtitleLabel)
         view.addSubview(demandButton)
         view.addSubview(supplyButton)
     }

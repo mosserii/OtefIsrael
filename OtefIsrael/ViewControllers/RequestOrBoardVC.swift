@@ -73,6 +73,8 @@ class RequestOrBoardVC: UIViewController {
             return
         }
         let volunteerVC = VolunteerVC()
+        print("isDemand")
+        print(isDemand)
         volunteerVC.isDemand = self.isDemand
         let nav = UINavigationController(rootViewController: volunteerVC)
         nav.modalPresentationStyle = .fullScreen

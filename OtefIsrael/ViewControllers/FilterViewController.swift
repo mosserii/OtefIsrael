@@ -33,19 +33,7 @@ class FilterViewController: UIViewController {
         
         return [
             FilterSection(title: "קטגוריה", options: categories),
-            FilterSection(title: "סוג מוצר", options: [
-                FilterOption(name: "מיטות", isSelected: false),
-                FilterOption(name: "שולחנות", isSelected: false),
-                FilterOption(name: "ספות", isSelected: false),
-                FilterOption(name: "ריהוט", isSelected: false)
-            ]),
-            FilterSection(title: "מצב מוצר", options: [
-                FilterOption(name: "חדש באריזה", isSelected: false),
-                FilterOption(name: "כמו חדש", isSelected: false),
-                FilterOption(name: "משומש", isSelected: false),
-                FilterOption(name: "דרוש תיקון", isSelected: false)
-            ]),
-            FilterSection(title: "אזור מכירה", options: [
+            FilterSection(title: "איזור", options: [
                 FilterOption(name: "ירושלים", isSelected: false),
                 FilterOption(name: "תל אביב יפו", isSelected: false),
                 FilterOption(name: "ראשון לציון", isSelected: false),

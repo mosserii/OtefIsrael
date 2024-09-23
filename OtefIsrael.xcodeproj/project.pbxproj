@@ -36,6 +36,7 @@
 		0C4A69332C7754C700E36B1B /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69322C7754C700E36B1B /* FilterViewController.swift */; };
 		0C4A69352C775A3600E36B1B /* DemandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69342C775A3600E36B1B /* DemandVC.swift */; };
 		0C4A69372C776D6800E36B1B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69362C776D6800E36B1B /* MainViewController.swift */; };
+		0C7034ED2CA1661D002B4645 /* FollowUpQuestionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7034EC2CA1661D002B4645 /* FollowUpQuestionsVC.swift */; };
 		0C733FEE2C9247840060B141 /* RequestOrBoardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */; };
 		0C733FF02C924AC60060B141 /* infoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C733FEF2C924AC60060B141 /* infoVC.swift */; };
 		34547E90026034B2A979B83F /* Pods_OtefIsrael.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */; };
@@ -74,6 +75,7 @@
 		0C4A69322C7754C700E36B1B /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		0C4A69342C775A3600E36B1B /* DemandVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandVC.swift; sourceTree = "<group>"; };
 		0C4A69362C776D6800E36B1B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		0C7034EC2CA1661D002B4645 /* FollowUpQuestionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUpQuestionsVC.swift; sourceTree = "<group>"; };
 		0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOrBoardVC.swift; sourceTree = "<group>"; };
 		0C733FEF2C924AC60060B141 /* infoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = infoVC.swift; sourceTree = "<group>"; };
 		5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OtefIsrael.debug.xcconfig"; path = "Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael.debug.xcconfig"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				0C4A692D2C77295D00E36B1B /* categoriesVC.swift */,
 				0C4A69322C7754C700E36B1B /* FilterViewController.swift */,
 				0C733FED2C9247840060B141 /* RequestOrBoardVC.swift */,
+				0C7034EC2CA1661D002B4645 /* FollowUpQuestionsVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				0C4A69332C7754C700E36B1B /* FilterViewController.swift in Sources */,
 				0C4A69142C75CCA700E36B1B /* Models.swift in Sources */,
 				0C4A690E2C75CB5600E36B1B /* StorageManager.swift in Sources */,
+				0C7034ED2CA1661D002B4645 /* FollowUpQuestionsVC.swift in Sources */,
 				0C4A69212C75DBC600E36B1B /* Buttons.swift in Sources */,
 				0C4A68E52C75C80B00E36B1B /* AppDelegate.swift in Sources */,
 				0C4A68E72C75C80B00E36B1B /* SceneDelegate.swift in Sources */,

@@ -168,9 +168,6 @@ final class StorageManager {
             }
         }
     }
-
-
-    
     
     public enum StorageErrors: Error {
         case failedToUpload

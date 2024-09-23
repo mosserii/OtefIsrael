@@ -158,7 +158,7 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
     private func configureBoardContent() {
         DatabaseManager.shared.retrieveAllUserRequests { [weak self] userRequests in
             guard let self = self else { return }
-            self.requests = userRequests.filter { $0.isDemand == self.isDemandBoard && $0.isPublic }
+            self.requests = userRequests.filter { $0.isDemand == !self.isDemandBoard && $0.isPublic }
             self.requestCollectionView.reloadData()
         }
     }
@@ -218,30 +218,41 @@ class SpecificBoardVC: UIViewController, UISearchBarDelegate {
         var filteredResults = requests
         for section in selectedFilters {
             switch section.title {
-            case "סוג מוצר":
+//            case "סוג מוצר":
+//                let selectedCategories = section.options.filter { $0.isSelected }.map { $0.name }
+//                if !selectedCategories.isEmpty {
+//                    filteredResults = filteredResults.filter { request in
+//                        return !Set(request.categories).intersection(selectedCategories).isEmpty
+//                    }
+//                }
+//            case "מצב מוצר":
+//                let selectedConditions = section.options.filter { $0.isSelected }.map { $0.name }
+//                if !selectedConditions.isEmpty {
+//                    filteredResults = filteredResults.filter { request in
+//                        let inCategories = !Set(request.categories).intersection(selectedConditions).isEmpty
+//                        let inDescription = selectedConditions.contains { condition in
+//                            request.description?.contains(condition) ?? false
+//                        }
+//                        return inCategories || inDescription
+//                    }
+//                }
+            case "קטגוריה":
                 let selectedCategories = section.options.filter { $0.isSelected }.map { $0.name }
                 if !selectedCategories.isEmpty {
                     filteredResults = filteredResults.filter { request in
-                        return !Set(request.categories).intersection(selectedCategories).isEmpty
+                        let requestCategories = request.categories
+                        return !requestCategories.isEmpty && !Set(requestCategories).isDisjoint(with: selectedCategories)
                     }
                 }
-            case "מצב מוצר":
-                let selectedConditions = section.options.filter { $0.isSelected }.map { $0.name }
-                if !selectedConditions.isEmpty {
-                    filteredResults = filteredResults.filter { request in
-                        let inCategories = !Set(request.categories).intersection(selectedConditions).isEmpty
-                        let inDescription = selectedConditions.contains { condition in
-                            request.description?.contains(condition) ?? false
-                        }
-                        return inCategories || inDescription
-                    }
-                }
-            case "אזור מכירה":
+            case "איזור":
                 let selectedCities = section.options.filter { $0.isSelected }.map { $0.name }
                 if !selectedCities.isEmpty {
                     filteredResults = filteredResults.filter { request in
                         guard let city = request.currentCity else { return false }
-                        return selectedCities.contains(city)
+                        // Check if any of the selected cities is a substring of the request's city or vice versa
+                        return selectedCities.contains { selectedCity in
+                            city.contains(selectedCity) || selectedCity.contains(city)
+                        }
                     }
                 }
             default:
@@ -274,6 +285,7 @@ extension SpecificBoardVC: UICollectionViewDataSource, UICollectionViewDelegateF
         cell.imageView.image = UIImage(named: "launchLogo")
         cell.titleLabel.text = request.title
         cell.categoriesLabel.text = request.categories.joined(separator: ", ")
+        cell.cityLabel.text = request.currentCity
         cell.descriptionLabel.text = request.description
 
         return cell

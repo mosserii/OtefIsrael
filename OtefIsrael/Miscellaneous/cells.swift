@@ -104,6 +104,15 @@ class RequestCell: UICollectionViewCell {
         label.numberOfLines = 1
         return label
     }()
+    
+    let cityLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right // Align text to the right
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .gray
+        label.numberOfLines = 1
+        return label
+    }()
 
     let descriptionLabel: UILabel = {
         let label = UILabel()
@@ -132,6 +141,7 @@ class RequestCell: UICollectionViewCell {
         addSubview(imageView)
         addSubview(titleLabel)
         addSubview(categoriesLabel)
+        addSubview(cityLabel)
         addSubview(descriptionLabel)
 
         // Layout the imageView to take the top third of the cell
@@ -158,11 +168,11 @@ class RequestCell: UICollectionViewCell {
 
         // Layout the categoriesLabel below the titleLabel
         categoriesLabel.frame = CGRect(x: 8, y: titleLabel.frame.maxY + 4, width: frame.width - 16, height: 20)
+        cityLabel.frame = CGRect(x: 8, y: categoriesLabel.frame.maxY + 4, width: frame.width - 16, height: 20)
 
         // Layout the descriptionLabel to take the remaining space
-        descriptionLabel.frame = CGRect(x: 8, y: categoriesLabel.frame.maxY + 4, width: frame.width - 16, height: frame.height - categoriesLabel.frame.maxY - 12)
+        descriptionLabel.frame = CGRect(x: 8, y: cityLabel.frame.maxY + 4, width: frame.width - 16, height: frame.height - cityLabel.frame.maxY - 12)
     }
-
 }
 
 
