@@ -58,6 +58,7 @@ extension DatabaseManager{
             "requests": user.requests
         ]
         
+        userValues["model_version"] = 1
         // Only add originalCity and currentCity if they are not nil
         if let originalCity = user.originalCity {
             userValues["original_city"] = originalCity
@@ -79,6 +80,66 @@ extension DatabaseManager{
         }
     }
     
+    
+    public func updateUser(with updatedUser: User, completion: @escaping (Bool) -> Void) {
+        // Prepare the dictionary of values to update
+        var updatedValues: [String: Any] = [:]
+        
+        // Update only the fields that are not nil or have changed
+        updatedValues["first_name"] = updatedUser.firstName
+        updatedValues["last_name"] = updatedUser.lastName
+        updatedValues["phone"] = updatedUser.phoneNumber
+        
+        // Handle optional fields
+        if let originalCity = updatedUser.originalCity {
+            updatedValues["original_city"] = originalCity
+        } else {
+            updatedValues["original_city"] = NSNull() // Removes the field if nil
+        }
+        
+        if let currentCity = updatedUser.currentCity {
+            updatedValues["current_city"] = currentCity
+        } else {
+            updatedValues["current_city"] = NSNull() // Removes the field if nil
+        }
+        
+        // Add or update model version if needed
+        updatedValues["model_version"] = updatedUser.modelVersion ?? 1
+        
+//        updatedValues["email"] = updatedUser.email
+//        updatedValues["isAdmin"] = updatedUser.isAdmin
+//        updatedValues["requests"] = updatedUser.requests
+        
+        // Update the user data in Firebase
+        database.child("users").child(updatedUser.id).updateChildValues(updatedValues) { error, _ in
+            if let error = error {
+                print("Failed to update user: \(error)")
+                completion(false)
+            } else {
+                print("User updated successfully")
+                completion(true)
+            }
+        }
+    }
+
+    // Retrieve all users
+    func getAllUsers(completion: @escaping ([User]) -> Void) {
+        database.child("users").observeSingleEvent(of: .value) { snapshot in
+            var users = [User]()
+            
+            for child in snapshot.children {
+                if let childSnapshot = child as? DataSnapshot,
+                   let value = childSnapshot.value as? [String: Any],
+                   let jsonData = try? JSONSerialization.data(withJSONObject: value, options: []),
+                   var user = try? JSONDecoder().decode(User.self, from: jsonData) {
+                    user.id = childSnapshot.key // Firebase assigns user IDs as keys
+                    users.append(user)
+                }
+            }
+            completion(users)
+        }
+    }
+    
     public func getUserData(with user_uid: String, completion: @escaping (User?) -> Void) {
         // Observe a single event to retrieve user data
         database.child("users").child(user_uid).observeSingleEvent(of: .value) { (snapshot) in
@@ -92,7 +153,7 @@ extension DatabaseManager{
                 completion(nil)
                 return
             }
-
+//            let modelVersion = userData["model_version"] as? Int ?? 1 // Default to version 1 for old users
             // Retrieve optional fields if they exist
             let originalCity = userData["original_city"] as? String
             let currentCity = userData["current_city"] as? String
@@ -107,6 +168,13 @@ extension DatabaseManager{
                 isAdmin = false // Default value if neither Bool nor Int
             }
 
+            
+//            var preferredLanguage: String? = nil
+//            if modelVersion >= 2 {
+//                // Fetch new fields available in version 2 or higher
+//                preferredLanguage = userData["preferred_language"] as? String
+//            }
+            
             // Handle missing `requests` field by making it optional
             let requestsDict = userData["requests"] as? [String: Any]
             let requestsData = requestsDict != nil ? Array(requestsDict!.keys) : [] // Empty array if no requests
@@ -122,11 +190,45 @@ extension DatabaseManager{
                 email: userEmail,
                 requests: requestsData,
                 phoneNumber: userPhone
+                //preferredLanguage: preferredLanguage // Add new field for version 2+
             )
+            
+//            if modelVersion < 2 {
+//                self.updateUserToLatestVersion(user: user)
+//            }
+            
 
             completion(user)
         }
     }
+    
+    //TODO if we change the user model
+//    public func updateUserToLatestVersion(user: User) {
+//        // Create a dictionary to store fields that need to be updated
+//        var updatedValues: [String: Any] = [:]
+//
+//        // Check for fields that need to be added in the latest version
+//        if user.preferredLanguage == nil {
+//            // Add default value for preferredLanguage if it's missing
+//            updatedValues["preferred_language"] = "en" // Set default value as "en" (English)
+//        }
+//
+//        // Set the latest model version
+//        updatedValues["model_version"] = 2
+//
+//        // Perform the update if there are any fields that need to be changed
+//        if !updatedValues.isEmpty {
+//            // Update the user's data in the database
+//            database.child("users").child(user.id).updateChildValues(updatedValues) { error, _ in
+//                if let error = error {
+//                    print("Failed to migrate user data: \(error)")
+//                } else {
+//                    print("User data migrated to the latest version.")
+//                }
+//            }
+//        }
+//    }
+
     
     func checkIfUserIsAdmin(completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {

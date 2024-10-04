@@ -12,7 +12,7 @@ import MapKit
 
 import Foundation
 
-struct User: Identifiable {
+struct User: Identifiable, Codable {
     var id = UUID().uuidString
     var isAdmin: Bool
     var firstName: String
@@ -22,6 +22,7 @@ struct User: Identifiable {
     var email: String
     var requests: [String]
     var phoneNumber : String
+    var modelVersion: Int?
 }
 
 struct UserRequest: Identifiable, Equatable, Codable {
@@ -59,4 +60,11 @@ struct Category: Codable, Equatable {
     static func == (lhs: Category, rhs: Category) -> Bool {
         return lhs.category == rhs.category && lhs.image_id == rhs.image_id
     }
+}
+
+struct FilterCriteria {
+    var startDate: Date?
+    var endDate: Date?
+    var category: String?
+    var city: String?
 }

@@ -359,7 +359,7 @@
         <scene sceneID="1O1-CC-Lfe">
             <objects>
                 <navigationController storyboardIdentifier="RequestsBoardNav" title="Requests Boards" automaticallyAdjustsScrollViewInsets="NO" id="kG8-gd-CNK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="בקשות" image="tablecells.fill" catalog="system" selectedImage="tablecells.fill" id="eO9-Sj-NIL"/>
+                    <tabBarItem key="tabBarItem" title="לוח קהילה" image="tablecells.fill" catalog="system" selectedImage="tablecells.fill" id="eO9-Sj-NIL"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h9Q-CP-PUu">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>

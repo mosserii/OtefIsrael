@@ -15,12 +15,14 @@ import SDWebImage
 
 class ProfileViewController: UIViewController {
         
+    var existingUser: User? = nil
+    
     var userRequests = [UserRequest]()
     let requestsTableViewController = UITableViewController(style: .plain)
     private var imageChanged: Bool = false
     
     var tableView1 = UITableView()
-    var selectOptions = ["צור קשר", "הגדרות", "פייסבוק", "מפתח האפליקציה", "דיווח על מישהו שזקוק לעזרה", "התנתקות", "מחק חשבון"]
+    var selectOptions = ["צור קשר", "עריכת פרטים אישיים", "פייסבוק", "מפתח האפליקציה", "דיווח על מישהו שזקוק לעזרה", "התנתקות", "מחק חשבון"]
     
     private let selectOptionSymbols: [UIImage?] = [
         UIImage(systemName: "envelope")?.withRenderingMode(.alwaysTemplate),
@@ -182,11 +184,20 @@ class ProfileViewController: UIViewController {
     private func addAdminButton() {
         let adminButton = UIBarButtonItem(title: "Admin", style: .plain, target: self, action: #selector(openAdminNotifications))
         navigationItem.leftBarButtonItem = adminButton
+        
+        let statisticsButton = UIBarButtonItem(title: "Statistics", style: .plain, target: self, action: #selector(openAdminStatistics))
+        navigationItem.rightBarButtonItem = statisticsButton
     }
 
     @objc private func openAdminNotifications() {
         let adminNotificationsVC = AdminNotificationsVC()
         let navController = UINavigationController(rootViewController: adminNotificationsVC)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    @objc private func openAdminStatistics() {
+        let statisticsViewController = StatisticsViewController()
+        let navController = UINavigationController(rootViewController: statisticsViewController)
         present(navController, animated: true, completion: nil)
     }
 
@@ -198,6 +209,7 @@ class ProfileViewController: UIViewController {
         
         guard let user_id = Auth.auth().currentUser?.uid else {
             let vc = LoginViewController()
+            vc.isFromProfile = true
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true)
@@ -288,6 +300,25 @@ class ProfileViewController: UIViewController {
         imageView.layer.cornerRadius = imageView.width/2.0
     }
     
+    @objc func changeDetailsTapped() {
+        
+        guard let user_id = Auth.auth().currentUser?.uid else {return}
+        
+        DatabaseManager.shared.getUserData(with: user_id) { [weak self] (user) in
+            guard let strongSelf = self else {return}
+            if let existingUser = user {
+                let updateVC = UpdateUserDetailsViewController()
+                updateVC.onUpdateCompletion = { [weak self] in
+                    self?.setApperance()
+                }
+                updateVC.existingUser = existingUser // Pass the existing user data
+                self?.existingUser = existingUser // Pass the existing user data
+                let navVC = UINavigationController(rootViewController: updateVC)
+                strongSelf.present(navVC, animated: true)
+            }
+        }
+    }
+    
     
     @objc private func logoutButtonTapped(){
         
@@ -313,6 +344,7 @@ class ProfileViewController: UIViewController {
             do {//todo big check here (about vc on success)
                 try FirebaseAuth.Auth.auth().signOut()
                 let vc = LoginViewController()
+                vc.isFromProfile = true
                 let nav = UINavigationController(rootViewController: vc)
                 nav.modalPresentationStyle = .fullScreen
                 strongSelf.present(nav, animated: true)
@@ -376,7 +408,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource, MFM
         switch selectOptions[indexPath.row] {
         case "Passengers Details":
             print("Terms of Use")
-        case "Payment Methods":
+        case "עריכת פרטים אישיים":
+            changeDetailsTapped()
             print("Payment Methods screen to view/edit/add Payments")
         case "צור קשר":
             // Check if the device can send email
@@ -488,6 +521,7 @@ extension ProfileViewController{
             do {
                 try Auth.auth().signOut()
                 let vc = LoginViewController()
+                vc.isFromProfile = true
                 let nav = UINavigationController(rootViewController: vc)
                 nav.modalPresentationStyle = .fullScreen
                 self.present(nav, animated: true)

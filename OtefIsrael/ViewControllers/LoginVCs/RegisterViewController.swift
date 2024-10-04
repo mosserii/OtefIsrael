@@ -174,6 +174,63 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         return button
     }()
     
+    private let firstNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "שם פרטי"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let lastNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "שם משפחה"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let originalCityLabel: UILabel = {
+        let label = UILabel()
+        label.text = "יישוב בת״ז"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let currentCityLabel: UILabel = {
+        let label = UILabel()
+        label.text = "יישוב נוכחי"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let emailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "כתובת אימייל"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let phoneLabel: UILabel = {
+        let label = UILabel()
+        label.text = "מספר טלפון"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let passwordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "סיסמה"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .right
+        return label
+    }()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "פתיחת חשבון"
@@ -187,9 +244,9 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         firstNameField.leftView =  createLeftViewWithIcon(named: "person.fill")
-        lastNameField.leftView =  createLeftViewWithIcon(named: "building")
-        originalCityField.leftView =  createLeftViewWithIcon(named: "person.3.fill")
-        currentCityField.leftView =  createLeftViewWithIcon(named: "person.3.fill")
+        lastNameField.leftView =  createLeftViewWithIcon(named: "person.fill")
+        originalCityField.leftView =  createLeftViewWithIcon(named: "building")
+        currentCityField.leftView =  createLeftViewWithIcon(named: "building.2")
         emailField.leftView = createLeftViewWithIcon(named: "envelope.fill")
         phoneField.leftView = createLeftViewWithIcon(named: "phone.fill")
         passwordField.leftView = createLeftViewWithIcon(named: "lock.fill")
@@ -213,6 +270,15 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(registerButton)
         
+        scrollView.addSubview(firstNameLabel)
+        scrollView.addSubview(lastNameLabel)
+        scrollView.addSubview(originalCityLabel)
+        scrollView.addSubview(currentCityLabel)
+        scrollView.addSubview(emailLabel)
+        scrollView.addSubview(phoneLabel)
+        scrollView.addSubview(passwordLabel)
+
+        
         addlinksToAgreementLabel()
     }
     
@@ -222,18 +288,45 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
         
         scrollView.frame = view.bounds
         
-        let size = scrollView.width/2
+        let size = scrollView.width/2.4
         
         imageView.frame = CGRect(x: (scrollView.width - size)/2, y: 20, width: size, height: size)
-        firstNameField.frame = CGRect(x: 30, y: imageView.bottom + 15, width: scrollView.width-60, height: 32)
-        lastNameField.frame = CGRect(x: 30, y: firstNameField.bottom + 30, width: scrollView.width-60, height: 32)
-        originalCityField.frame = CGRect(x: 30, y: lastNameField.bottom + 30, width: scrollView.width-60, height: 32)
-        currentCityField.frame = CGRect(x: 30, y: originalCityField.bottom + 30, width: scrollView.width-60, height: 32)
-        emailField.frame = CGRect(x: 30, y: currentCityField.bottom + 30, width: scrollView.width-60, height: 32)
-        phoneField.frame = CGRect(x: 30, y: emailField.bottom+30, width: (scrollView.width-60), height: 32)
-        passwordField.frame = CGRect(x: 30, y: phoneField.bottom+30, width: scrollView.width-60, height: 32)
-        registerButton.frame = CGRect(x: 30, y: passwordField.bottom+30, width: scrollView.width-60, height: 32)
-        agreementLabel.frame = CGRect(x: 30, y: registerButton.bottom+30, width: scrollView.width-60, height: 70)
+        
+        
+        firstNameLabel.frame = CGRect(x: 30, y: imageView.bottom + 15, width: scrollView.width - 60, height: 20)
+        firstNameField.frame = CGRect(x: 30, y: firstNameLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        lastNameLabel.frame = CGRect(x: 30, y: firstNameField.bottom + 12, width: scrollView.width - 60, height: 20)
+        lastNameField.frame = CGRect(x: 30, y: lastNameLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        originalCityLabel.frame = CGRect(x: 30, y: lastNameField.bottom + 12, width: scrollView.width - 60, height: 20)
+        originalCityField.frame = CGRect(x: 30, y: originalCityLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        currentCityLabel.frame = CGRect(x: 30, y: originalCityField.bottom + 12, width: scrollView.width - 60, height: 20)
+        currentCityField.frame = CGRect(x: 30, y: currentCityLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        emailLabel.frame = CGRect(x: 30, y: currentCityField.bottom + 12, width: scrollView.width - 60, height: 20)
+        emailField.frame = CGRect(x: 30, y: emailLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        phoneLabel.frame = CGRect(x: 30, y: emailField.bottom + 12, width: scrollView.width - 60, height: 20)
+        phoneField.frame = CGRect(x: 30, y: phoneLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        passwordLabel.frame = CGRect(x: 30, y: phoneField.bottom + 12, width: scrollView.width - 60, height: 20)
+        passwordField.frame = CGRect(x: 30, y: passwordLabel.bottom + 5, width: scrollView.width - 60, height: 32)
+
+        registerButton.frame = CGRect(x: 30, y: passwordField.bottom + 18, width: scrollView.width - 60, height: 32)
+
+        
+        
+//        firstNameField.frame = CGRect(x: 30, y: imageView.bottom + 15, width: scrollView.width-60, height: 32)
+//        lastNameField.frame = CGRect(x: 30, y: firstNameField.bottom + 30, width: scrollView.width-60, height: 32)
+//        originalCityField.frame = CGRect(x: 30, y: lastNameField.bottom + 30, width: scrollView.width-60, height: 32)
+//        currentCityField.frame = CGRect(x: 30, y: originalCityField.bottom + 30, width: scrollView.width-60, height: 32)
+//        emailField.frame = CGRect(x: 30, y: currentCityField.bottom + 30, width: scrollView.width-60, height: 32)
+//        phoneField.frame = CGRect(x: 30, y: emailField.bottom+30, width: (scrollView.width-60), height: 32)
+//        passwordField.frame = CGRect(x: 30, y: phoneField.bottom+30, width: scrollView.width-60, height: 32)
+//        registerButton.frame = CGRect(x: 30, y: passwordField.bottom+30, width: scrollView.width-60, height: 32)
+        agreementLabel.frame = CGRect(x: 30, y: registerButton.bottom+5, width: scrollView.width-60, height: 70)
 
         scrollView.contentSize = CGSize(width: view.width, height: view.height*1.5)
 

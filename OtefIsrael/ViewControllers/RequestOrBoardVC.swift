@@ -16,7 +16,7 @@ class RequestOrBoardVC: UIViewController {
     let boardButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("לצפות בלוח HELP", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .systemPurple
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         button.layer.cornerRadius = 30 // This will be updated after frame is set
@@ -26,7 +26,7 @@ class RequestOrBoardVC: UIViewController {
     let requestButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("להירשם להתנדבות", for: .normal)
-        button.backgroundColor = .systemGray
+        button.backgroundColor = .systemPink
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         button.layer.cornerRadius = 30 // This will be updated after frame is set
@@ -60,7 +60,9 @@ class RequestOrBoardVC: UIViewController {
         
         if isDemand{
             boardButton.setTitle("לצפות בלוח נתינה", for: .normal)
+            boardButton.backgroundColor = .systemMint
             requestButton.setTitle("לבקש סיוע", for: .normal)
+            requestButton.backgroundColor = .systemOrange
         }
         
         view.addSubview(boardButton)

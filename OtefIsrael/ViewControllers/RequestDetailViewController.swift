@@ -12,13 +12,21 @@ import SDWebImage
 import MessageUI
 
 
+protocol RequestDetailViewControllerDelegate: AnyObject {
+    func requestDetailViewController(_ controller: RequestDetailViewController, didUpdateRequest request: UserRequest)
+}
+
+
+
 class RequestDetailViewController: UIViewController {
 
     var request: UserRequest?
     
+    weak var delegate: RequestDetailViewControllerDelegate?
     var tappedMail: Bool?
     var tappedPhone: Bool?
     var sentMail: Bool?
+    var tappedCompleted: Bool = false
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -89,6 +97,51 @@ class RequestDetailViewController: UIViewController {
         label.textAlignment = .right // Align text to the right for Hebrew
         return label
     }()
+    
+    private let handledLabel: UILabel = {
+        let label = UILabel()
+        label.text = "האם הבקשה טופלה?"
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textAlignment = .right
+        label.isHidden = true // Hidden by default
+        return label
+    }()
+
+    private let yesButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("כן", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 5
+        button.isHidden = true // Hidden by default
+        button.addTarget(self, action: #selector(yesButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
+    private let noButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("לא", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 5
+        button.isHidden = true // Hidden by default
+        button.addTarget(self, action: #selector(noButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private let detailsTextView: UITextView = {
+        let textView = UITextView()
+        textView.layer.cornerRadius = 8
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.font = .systemFont(ofSize: 16)
+        textView.text = "רשום כאן עוד פרטים על החוויה שלך..."
+        textView.textColor = .lightGray
+        textView.textAlignment = .right
+        textView.isHidden = true
+        return textView
+    }()
+
 
     private let emailButton: UIButton = {
         let button = UIButton(type: .system)
@@ -149,13 +202,23 @@ class RequestDetailViewController: UIViewController {
         super.viewWillDisappear(animated)
         imageTimer?.invalidate()
 
-        guard let existingRequest = request else{
+        guard let existingRequest = request else {
             return
         }
-        let viewsTrue = (existingRequest.user_id == Auth.auth().currentUser?.uid) ? 0 : 1 //self viewing your ad does not count
-        let mailViewsTrue = (tappedMail ?? false) ? 1 : 0
-        let phoneViewsTrue = (tappedPhone ?? false) ? 1 : 0
-        let mailsSentTrue = (sentMail ?? false) ? 1 : 0
+        
+        let isCreator = (existingRequest.user_id == Auth.auth().currentUser?.uid) ? 1 : 0
+        
+        let viewsTrue = 1 - isCreator
+        let mailViewsTrue = (tappedMail ?? false) ? 1 - isCreator : 0
+        let phoneViewsTrue = (tappedPhone ?? false) ? 1 - isCreator : 0
+        let mailsSentTrue = (sentMail ?? false) ? 1 - isCreator: 0
+        
+        var feedback = existingRequest.feedback
+        if let details = detailsTextView.text, details != "רשום כאן עוד פרטים על החוויה שלך..."{
+           feedback = details
+        }
+
+        let isCompleted = (tappedCompleted) ? true : existingRequest.isCompleted //true if said true, otherwise don't change
 
         let updatedRequest = UserRequest(
             id: existingRequest.id,
@@ -176,13 +239,14 @@ class RequestDetailViewController: UIViewController {
             mailViews: existingRequest.mailViews + mailViewsTrue,
             phoneViews: existingRequest.phoneViews + phoneViewsTrue,
             mailsSent: existingRequest.mailsSent + mailsSentTrue,
-            isCompleted: existingRequest.isCompleted,
-            feedback: existingRequest.feedback
+            isCompleted: isCompleted, // This will now reflect the "Yes" action
+            feedback: feedback
         )
         
         DatabaseManager.shared.updateUserRequest(userId: existingRequest.user_id, userRequest: updatedRequest) { success in
             if success {
                 print("User request updated successfully")
+                self.delegate?.requestDetailViewController(self, didUpdateRequest: updatedRequest)
                 self.dismiss(animated: true, completion: nil)
             } else {
                 print("Failed to update user request")
@@ -208,12 +272,29 @@ class RequestDetailViewController: UIViewController {
         scrollView.addSubview(emailLabel)
         scrollView.addSubview(phoneLabel)
         
+        scrollView.addSubview(handledLabel)
+        scrollView.addSubview(yesButton)
+        scrollView.addSubview(noButton)
+        scrollView.addSubview(detailsTextView)
+
+        
         buttonStackView.addArrangedSubview(emailButton)
         buttonStackView.addArrangedSubview(phoneButton)
         view.addSubview(buttonStackView)
         
         emailButton.addTarget(self, action: #selector(emailButtonTapped), for: .touchUpInside)
         phoneButton.addTarget(self, action: #selector(phoneButtonTapped), for: .touchUpInside)
+        
+        if let request = request, request.user_id == Auth.auth().currentUser?.uid, !request.isCompleted {
+            handledLabel.isHidden = false
+            yesButton.isHidden = false
+            noButton.isHidden = false
+            setupTextViewPlaceholderBehavior()
+        } else {
+            handledLabel.isHidden = true
+            yesButton.isHidden = true
+            noButton.isHidden = true
+        }
     }
 
 
@@ -234,8 +315,16 @@ class RequestDetailViewController: UIViewController {
         emailLabel.frame = CGRect(x: 16, y: dateLabel.frame.maxY + 8, width: scrollView.frame.width - 32, height: emailLabel.intrinsicContentSize.height)
         phoneLabel.frame = CGRect(x: 16, y: emailLabel.frame.maxY + 8, width: scrollView.frame.width - 32, height: phoneLabel.intrinsicContentSize.height)
 
+        handledLabel.frame = CGRect(x: 16, y: phoneLabel.frame.maxX + 20, width: scrollView.frame.width - 32, height: 30)
+        noButton.frame = CGRect(x: 16, y: handledLabel.frame.maxY + 8, width: (scrollView.frame.width - 48) / 2, height: 40)
+        yesButton.frame = CGRect(x: noButton.frame.maxX + 16, y: handledLabel.frame.maxY + 8, width: (scrollView.frame.width - 48) / 2, height: 40)
+        detailsTextView.frame = CGRect(x: 16, y: noButton.bottom + 5, width: view.width - 2 * 16, height: 90)
+
+        
         let buttonHeight = emailButton.frame.height + 64
         buttonStackView.frame = CGRect(x: 16, y: view.frame.height - buttonHeight - view.safeAreaInsets.bottom, width: view.frame.width - 32, height: emailButton.frame.height + 32)
+        
+
 
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: phoneLabel.frame.maxY + 70)
         
@@ -245,6 +334,21 @@ class RequestDetailViewController: UIViewController {
         }
         else{
             setupImageCarousel(imageUrls: ["launchLogo"])
+        }
+    }
+    
+    private func setupTextViewPlaceholderBehavior() {
+        detailsTextView.delegate = self
+        
+        // Placeholder behavior for UITextView
+        detailsTextView.text = "רשום כאן עוד פרטים על החוויה שלך..."
+        detailsTextView.textColor = .lightGray
+    }
+    
+    @objc private func textViewTapped() {
+        if detailsTextView.text == "רשום כאן עוד פרטים על החוויה שלך..."{
+            detailsTextView.text = ""
+            detailsTextView.textColor = .black
         }
     }
     
@@ -266,6 +370,29 @@ class RequestDetailViewController: UIViewController {
 //            UIApplication.shared.open(emailUrl)
 //        }
 //    }
+    
+    @objc private func yesButtonTapped() {
+        tappedCompleted = true
+        detailsTextView.isHidden = false
+        yesButton.layer.borderColor = UIColor.gray.cgColor
+        yesButton.layer.borderWidth = 5.0
+
+        noButton.layer.borderColor = UIColor.clear.cgColor
+        noButton.layer.borderWidth = 0
+    }
+
+    @objc private func noButtonTapped() {
+        tappedCompleted = false
+        detailsTextView.isHidden = true
+
+        noButton.layer.borderColor = UIColor.gray.cgColor
+        noButton.layer.borderWidth = 5.0
+
+        yesButton.layer.borderColor = UIColor.clear.cgColor
+        yesButton.layer.borderWidth = 0
+    }
+
+
     
     @objc private func emailButtonTapped() {
         guard let request = request, let email = request.email else { return }
@@ -444,5 +571,22 @@ extension RequestDetailViewController: MFMailComposeViewControllerDelegate {
         }
 
         controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+extension RequestDetailViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "רשום כאן עוד פרטים על החוויה שלך..." {
+            textView.text = ""
+            textView.textColor = .black
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "רשום כאן עוד פרטים על החוויה שלך..."
+            textView.textColor = .lightGray
+        }
     }
 }

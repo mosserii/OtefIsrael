@@ -6,6 +6,8 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
 
     var onLoginSuccess: ((String) -> Void)?
+    
+    var isFromProfile: Bool = false
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -124,6 +126,10 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(versionTextView)
         scrollView.addSubview(ForgotButton)
         scrollView.addSubview(registerButton)
+        
+        let backButton = UIBarButtonItem(title: "חזור", style: .plain, target: self, action: #selector(backButtonTapped))
+        backButton.tintColor = .systemBlue // Customize the color if needed
+        navigationItem.leftBarButtonItem = backButton
 
         onLoginSuccess = { userID in
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
@@ -136,6 +142,24 @@ class LoginViewController: UIViewController {
                     nav.modalPresentationStyle = .fullScreen
                 }
             }
+        }
+    }
+    
+    
+    @objc private func backButtonTapped() {
+        
+        if isFromProfile{
+            let mainViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MainHome")
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                window.rootViewController?.dismiss(animated: true, completion: {
+                    window.rootViewController = mainViewController
+                })
+            }
+        }
+        else{
+            dismiss(animated: true, completion: nil)
         }
     }
 
