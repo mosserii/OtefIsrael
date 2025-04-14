@@ -13,5 +13,10 @@ target 'OtefIsrael' do
 
   pod 'RealmSwift'
   pod 'SDWebImage'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'GoogleSignIn'
+
+
 
 end

@@ -22,7 +22,6 @@
 		0C4A690E2C75CB5600E36B1B /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69062C75CB5600E36B1B /* StorageManager.swift */; };
 		0C4A69102C75CC0900E36B1B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A690F2C75CC0900E36B1B /* Extensions.swift */; };
 		0C4A69142C75CCA700E36B1B /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69132C75CCA700E36B1B /* Models.swift */; };
-		0C4A69162C75CDDF00E36B1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */; };
 		0C4A69182C75D2D100E36B1B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */; };
 		0C4A691B2C75D6E200E36B1B /* VolunteerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A691A2C75D6E200E36B1B /* VolunteerVC.swift */; };
 		0C4A69212C75DBC600E36B1B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4A69202C75DBC600E36B1B /* Buttons.swift */; };
@@ -43,6 +42,7 @@
 		0C9836B22CB01ED0006067A6 /* UpdateUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9836B12CB01ED0006067A6 /* UpdateUserDetailsViewController.swift */; };
 		0C9836B42CB02CF7006067A6 /* StatisticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9836B32CB02CF7006067A6 /* StatisticsManager.swift */; };
 		0C9836B62CB02D29006067A6 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9836B52CB02D29006067A6 /* StatisticsViewController.swift */; };
+		0C9836B92CB03E45006067A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C9836B82CB03E45006067A6 /* GoogleService-Info.plist */; };
 		34547E90026034B2A979B83F /* Pods_OtefIsrael.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,7 +65,6 @@
 		0C4A69062C75CB5600E36B1B /* StorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		0C4A690F2C75CC0900E36B1B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0C4A69132C75CCA700E36B1B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0C4A69172C75D2D100E36B1B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0C4A691A2C75D6E200E36B1B /* VolunteerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolunteerVC.swift; sourceTree = "<group>"; };
 		0C4A69202C75DBC600E36B1B /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
@@ -86,6 +85,8 @@
 		0C9836B12CB01ED0006067A6 /* UpdateUserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserDetailsViewController.swift; sourceTree = "<group>"; };
 		0C9836B32CB02CF7006067A6 /* StatisticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsManager.swift; sourceTree = "<group>"; };
 		0C9836B52CB02D29006067A6 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		0C9836B72CB03833006067A6 /* OtefIsrael.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OtefIsrael.entitlements; sourceTree = "<group>"; };
+		0C9836B82CB03E45006067A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5F9D2FE6AF2F036AA5B08874 /* Pods-OtefIsrael.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OtefIsrael.debug.xcconfig"; path = "Target Support Files/Pods-OtefIsrael/Pods-OtefIsrael.debug.xcconfig"; sourceTree = "<group>"; };
 		AA02C32146A51409D747CCBA /* Pods_OtefIsrael.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OtefIsrael.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -123,9 +124,10 @@
 		0C4A68E32C75C80B00E36B1B /* OtefIsrael */ = {
 			isa = PBXGroup;
 			children = (
+				0C9836B82CB03E45006067A6 /* GoogleService-Info.plist */,
+				0C9836B72CB03833006067A6 /* OtefIsrael.entitlements */,
 				0C4A69312C77335800E36B1B /* Miscellaneous */,
 				0C4A69192C75D6BB00E36B1B /* Delegates */,
-				0C4A69152C75CDDF00E36B1B /* GoogleService-Info.plist */,
 				0C4A69072C75CB5600E36B1B /* Managers */,
 				0C4A69112C75CC1C00E36B1B /* ViewControllers */,
 				0C4A68EA2C75C80B00E36B1B /* Main.storyboard */,
@@ -290,7 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C4A68EE2C75C80C00E36B1B /* Assets.xcassets in Resources */,
-				0C4A69162C75CDDF00E36B1B /* GoogleService-Info.plist in Resources */,
+				0C9836B92CB03E45006067A6 /* GoogleService-Info.plist in Resources */,
 				0C4A68F12C75C80C00E36B1B /* Base in Resources */,
 				0C4A68EC2C75C80B00E36B1B /* Base in Resources */,
 			);
@@ -527,6 +529,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OtefIsrael/OtefIsrael.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7XRFZ7XJ83;
@@ -557,6 +560,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OtefIsrael/OtefIsrael.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7XRFZ7XJ83;

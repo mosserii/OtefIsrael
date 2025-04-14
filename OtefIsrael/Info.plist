@@ -2,24 +2,67 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-					<key>UISceneStoryboardFile</key>
-					<string>Main</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <false/>
+        <key>UISceneConfigurations</key>
+        <dict>
+            <key>UIWindowSceneSessionRoleApplication</key>
+            <array>
+                <dict>
+                    <key>UISceneConfigurationName</key>
+                    <string>Default Configuration</string>
+                    <key>UISceneDelegateClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                    <key>UISceneStoryboardFile</key>
+                    <string>Main</string>
+                </dict>
+            </array>
+        </dict>
+    </dict>
+
+    <!-- Google Sign-In Configuration -->
+    <key>GIDClientID</key>
+    <string>980073519261-been4p45iu3kddctcls1jporkuamg69f.apps.googleusercontent.com</string>
+
+    <!-- URL Schemes for Google and Facebook -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <!-- Google Sign-In URL Scheme -->
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.980073519261-been4p45iu3kddctcls1jporkuamg69f</string> <!-- Correct Google Reversed Client ID -->
+            </array>
+        </dict>
+        <!-- Facebook URL Scheme -->
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb465002353231081</string> <!-- Facebook App ID -->
+            </array>
+        </dict>
+    </array>
+
+    <!-- Facebook SDK Configuration -->
+    <key>FacebookAppID</key>
+    <string>465002353231081</string> <!-- Facebook App ID -->
+    <key>FacebookDisplayName</key>
+    <string>OtefIsrael</string> <!-- App Name -->
+
+    <!-- Facebook Client Token -->
+    <key>FacebookClientToken</key>
+    <string>1d621f38bb0228b70d1fec342331e0d6</string> <!-- Facebook Client Token -->
+
+    <!-- Facebook SDK required for Facebook Login -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
 </dict>
 </plist>
+

@@ -1,7 +1,11 @@
 import Foundation
 import UIKit
 import MapKit
+import GoogleSignIn
+import FBSDKLoginKit
 import FirebaseAuth
+import FirebaseCore
+
 
 class LoginViewController: UIViewController {
 
@@ -54,7 +58,7 @@ class LoginViewController: UIViewController {
         field.semanticContentAttribute = .forceRightToLeft // Force text direction to right-to-left
         return field
     }()
-
+    
     private let loginButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .link
@@ -65,6 +69,22 @@ class LoginViewController: UIViewController {
         button.layer.borderColor = UIColor.gray.cgColor
         button.layer.borderWidth = 0.80
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        return button
+    }()
+    
+    private let facebookLoginButton: FBLoginButton = {
+        let button = FBLoginButton()
+        button.permissions = ["email", "public_profile"]
+        return button
+    }()
+    
+    private let googleLoginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Sign in with Google", for: .normal)
+        button.backgroundColor = .systemRed
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         return button
     }()
 
@@ -116,13 +136,15 @@ class LoginViewController: UIViewController {
 
         emailField.delegate = self
         passwordField.delegate = self
-        
+        facebookLoginButton.delegate = self
 
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
+        scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleLoginButton)
         scrollView.addSubview(versionTextView)
         scrollView.addSubview(ForgotButton)
         scrollView.addSubview(registerButton)
@@ -177,11 +199,14 @@ class LoginViewController: UIViewController {
         versionTextView.frame = CGRect(x: (scrollView.width - 230), y: loginButton.bottom + 20, width: 200, height: 32)
         ForgotButton.frame = CGRect(x: versionTextView.left - 100, y: loginButton.bottom + 20, width: 70, height: 32)
         registerButton.frame = CGRect(x: (scrollView.width - size) / 2, y: ForgotButton.bottom + 100, width: size, height: 32)
+        facebookLoginButton.frame = CGRect(x: 30, y: registerButton.bottom + 12, width: view.width - 60, height: 50)
+        googleLoginButton.frame = CGRect(x: 30, y: facebookLoginButton.bottom + 12, width: view.width - 60, height: 50)
     }
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+
 
     func createLeftViewWithIcon(named iconName: String) -> UIView {
         let iconSize: CGFloat = 24
@@ -321,3 +346,42 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
+extension LoginViewController: LoginButtonDelegate {
+    
+    
+    @objc func signIn(sender: Any) {
+      GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
+        guard error == nil else { return }
+
+        // If sign in succeeded, display the app's main content View.
+      }
+    }
+
+    
+    // Facebook Sign-In Logic
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let token = AccessToken.current?.tokenString else {
+            print("User failed to log in with Facebook")
+            return
+        }
+
+        let credential = FacebookAuthProvider.credential(withAccessToken: token)
+
+        // Sign in with Firebase
+        Auth.auth().signIn(with: credential) { authResult, error in
+            if let error = error {
+                print("Firebase login with Facebook failed: \(error.localizedDescription)")
+                return
+            }
+
+            // Successfully logged in, now transition to main app
+            if let result = authResult {
+                self.transitionToMainApp(loggedInUserUID: result.user.uid)
+            }
+        }
+    }
+
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        print("User logged out of Facebook")
+    }
+}

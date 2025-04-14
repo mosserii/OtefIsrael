@@ -421,6 +421,7 @@ class RegisterViewController: UIViewController, UITextViewDelegate {
             strongSelf.registerToFireBase()
         })
     }
+    
 
     
     func registerToFireBase(){
